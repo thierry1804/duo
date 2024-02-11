@@ -3,7 +3,7 @@
 {% block title %}Article index{% endblock %}
 
 {% block body %}
-    <h1>
+    <h1 class="mt-3">
         Articles
         <a href="{{ path('app_article_add') }}" title="Ajouter un nouvel article"><i class="fa-solid fa-circle-plus"></i></a>
         <a href="{{ path('app_category_index') }}" title="Liste des catégories"><i class="fa-solid fa-layer-group"></i></a>
@@ -14,6 +14,7 @@
             <tr>
                 <th width="200">Image</th>
                 <th>Nom</th>
+                <th>Catégorie</th>
                 <th>Couleur dispo</th>
                 <th>Taille dispo</th>
                 <th>Pointure dispo</th>
@@ -36,6 +37,7 @@
                     </a>
                 </td>
                 <td>{{ article.label }}</td>
+                <td>{{ article.category.label }}</td>
                 <td>{{ article.couleur }}</td>
                 <td>{{ article.taille }}</td>
                 <td>{{ article.pointure }}</td>

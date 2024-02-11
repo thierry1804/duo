@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Category;
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -20,6 +22,10 @@ class ArticlesType extends AbstractType
                 'label' => 'Catégorie',
                 'class' => Category::class,
                 'choice_label' => 'label',
+                'query_builder' => function (EntityRepository $er): QueryBuilder {
+                    return $er->createQueryBuilder('c')
+                        ->orderBy('c.label', 'ASC');
+                },
                 'mapped' => false,
                 'attr' => [
                     'class' => 'form-select'

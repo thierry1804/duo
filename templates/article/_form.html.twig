@@ -1,5 +1,13 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
+    <div class="row">
+        <div class="col-md-4 col-12">
+            <img src="{{ asset('uploads/' ~ form.vars.data.image) }}" class="rounded img-thumbnail mx-auto d-block" />
+            {{ form_row(form.image) }}
+        </div>
+        <div class="col-md-8 col-12">
+            {{ form_widget(form) }}
+        </div>
+    </div>
     <button class="btn btn-primary my-2">{{ button_label|default('Enregistrer') }}</button>
     <a href="{{ path('app_article_index') }}" class="btn btn-secondary my-2">{{ button_label|default('Annuler') }}</a>
 {{ form_end(form) }}
