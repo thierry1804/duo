@@ -1,7 +1,9 @@
 {{ form_start(form) }}
     <div class="row">
         <div class="col-md-4 col-12">
+            {% if form.vars.data %}
             <img src="{{ asset('uploads/' ~ form.vars.data.image) }}" class="rounded img-thumbnail mx-auto d-block" />
+            {% endif %}
             {{ form_row(form.image) }}
         </div>
         <div class="col-md-8 col-12">
