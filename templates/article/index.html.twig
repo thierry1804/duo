@@ -3,34 +3,34 @@
 {% block title %}Article index{% endblock %}
 
 {% block body %}
-    <h1>Article index</h1>
+    <h1>Articles <a href="{{ path('app_article_add') }}"><i class="fa-solid fa-circle-plus"></i></a></h1>
 
-    <table class="table">
+    <table class="table table-striped">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Image</th>
-                <th>Label</th>
-                <th>Couleur</th>
-                <th>Taille</th>
-                <th>Pointure</th>
-                <th>MinCmd</th>
-                <th>MinCmdUnit</th>
-                <th>Poids</th>
-                <th>Longueur</th>
-                <th>Largeur</th>
-                <th>Hauteur</th>
-                <th>Disponible</th>
-                <th>CreatedAt</th>
-                <th>EditedAt</th>
-                <th>actions</th>
+                <th width="200">Image</th>
+                <th>Nom</th>
+                <th>Couleur dispo</th>
+                <th>Taille dispo</th>
+                <th>Pointure dispo</th>
+                <th>Qté min de commande</th>
+                <th>Unité de commande</th>
+                <th>Poids (g)</th>
+                <th>Longueur (cm)</th>
+                <th>Largeur (cm)</th>
+                <th>Hauteur (cm)</th>
+                <th class="text-center">Dispo</th>
+                <th class="text-center">Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for article in articles %}
             <tr>
-                <td>{{ article.id }}</td>
-                <td>{{ article.image }}</td>
+                <td>
+                    <a href="{{ asset('uploads/' ~ article.image) }}" target="_blank">
+                        <img src="{{ asset('uploads/' ~ article.image) }}" class="rounded img-thumbnail" />
+                    </a>
+                </td>
                 <td>{{ article.label }}</td>
                 <td>{{ article.couleur }}</td>
                 <td>{{ article.taille }}</td>
@@ -41,12 +41,14 @@
                 <td>{{ article.longueur }}</td>
                 <td>{{ article.largeur }}</td>
                 <td>{{ article.hauteur }}</td>
-                <td>{{ article.disponible ? 'Yes' : 'No' }}</td>
-                <td>{{ article.createdAt ? article.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ article.editedAt ? article.editedAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('app_article_show', {'id': article.id}) }}">show</a>
-                    <a href="{{ path('app_article_edit', {'id': article.id}) }}">edit</a>
+                <td class="text-center">{{ article.disponible ? '<i class="fa-solid fa-circle-check"></i>' : '<i class="fa-regular fa-circle"></i>' }}</td>
+                <td class="text-center">
+                    <a href="{{ path('app_article_show', {'id': article.id}) }}">
+                        <i class="fa-solid fa-eye"></i>
+                    </a>
+                    <a href="{{ path('app_article_edit', {'id': article.id}) }}">
+                        <i class="fa-solid fa-pen"></i>
+                    </a>
                 </td>
             </tr>
         {% else %}
