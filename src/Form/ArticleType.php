@@ -14,6 +14,7 @@ class ArticleType extends AbstractType
         $builder
             ->add('image')
             ->add('label')
+            ->add('category')
             ->add('couleur')
             ->add('taille')
             ->add('pointure')

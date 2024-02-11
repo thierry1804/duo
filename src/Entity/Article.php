@@ -19,6 +19,9 @@ class Article
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $label = null;
 
+    #[ORM\ManyToOne]
+    private ?Category $category = null;
+
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $couleur = null;
 
@@ -80,6 +83,18 @@ class Article
     public function setLabel(string $label): static
     {
         $this->label = $label;
+
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): static
+    {
+        $this->category = $category;
 
         return $this;
     }
