@@ -17,15 +17,30 @@ class ArticlesType extends AbstractType
     {
         $builder
             ->add('category', EntityType::class, [
+                'label' => 'Catégorie',
                 'class' => Category::class,
                 'choice_label' => 'label',
                 'mapped' => false,
+                'attr' => [
+                    'class' => 'form-select'
+                ],
+                'label_attr' => [
+                    'class' => 'form-label'
+                ],
             ])
             ->add('images', FileType::class, [
-                'label' => false,
+                'label' => 'Images',
                 'multiple' => true,
                 'mapped' => false,
                 'by_reference' => false,
+                'attr' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'Choisissez une ou des images',
+                    'accept' => 'image/*',
+                ],
+                'label_attr' => [
+                    'class' => 'form-label mt-2'
+                ],
             ])
         ;
     }
