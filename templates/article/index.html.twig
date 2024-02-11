@@ -15,15 +15,15 @@
                 <th width="200">Image</th>
                 <th>Nom</th>
                 <th>Catégorie</th>
-                <th>Couleur dispo</th>
-                <th>Taille dispo</th>
-                <th>Pointure dispo</th>
-                <th>Qté min de commande</th>
-                <th>Unité de commande</th>
-                <th>Poids (g)</th>
-                <th>Longueur (cm)</th>
-                <th>Largeur (cm)</th>
-                <th>Hauteur (cm)</th>
+                <th class="d-none d-md-table-cell">Couleur dispo</th>
+                <th class="d-none d-md-table-cell">Taille dispo</th>
+                <th class="d-none d-md-table-cell">Pointure dispo</th>
+                <th class="d-none d-md-table-cell">Qté min de commande</th>
+                <th class="d-none d-md-table-cell">Unité de commande</th>
+                <th class="d-none d-md-table-cell">Poids (g)</th>
+                <th class="d-none d-md-table-cell">Longueur (cm)</th>
+                <th class="d-none d-md-table-cell">Largeur (cm)</th>
+                <th class="d-none d-md-table-cell">Hauteur (cm)</th>
                 <th class="text-center">Dispo</th>
                 <th class="text-center">Actions</th>
             </tr>
@@ -38,15 +38,15 @@
                 </td>
                 <td>{{ article.label }}</td>
                 <td>{{ article.category.label }}</td>
-                <td>{{ article.couleur }}</td>
-                <td>{{ article.taille }}</td>
-                <td>{{ article.pointure }}</td>
-                <td>{{ article.minCmd }}</td>
-                <td>{{ article.minCmdUnit }}</td>
-                <td>{{ article.poids }}</td>
-                <td>{{ article.longueur }}</td>
-                <td>{{ article.largeur }}</td>
-                <td>{{ article.hauteur }}</td>
+                <td class="d-none d-md-table-cell">{{ article.couleur }}</td>
+                <td class="d-none d-md-table-cell">{{ article.taille }}</td>
+                <td class="d-none d-md-table-cell">{{ article.pointure }}</td>
+                <td class="d-none d-md-table-cell">{{ article.minCmd }}</td>
+                <td class="d-none d-md-table-cell">{{ article.minCmdUnit }}</td>
+                <td class="d-none d-md-table-cell">{{ article.poids }}</td>
+                <td class="d-none d-md-table-cell">{{ article.longueur }}</td>
+                <td class="d-none d-md-table-cell">{{ article.largeur }}</td>
+                <td class="d-none d-md-table-cell">{{ article.hauteur }}</td>
                 <td class="text-center">{{ article.disponible ? '<i class="fa-solid fa-circle-check"></i>' : '<i class="fa-regular fa-circle"></i>' }}</td>
                 <td class="text-center">
                     <a href="{{ path('app_article_edit', {'id': article.id}) }}">
