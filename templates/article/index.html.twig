@@ -36,19 +36,19 @@
                         <img src="{{ asset('uploads/' ~ article.image) }}" class="rounded img-thumbnail" />
                     </a>
                 </td>
-                <td>{{ article.label }}</td>
-                <td>{{ article.category.label }}</td>
-                <td class="d-none d-md-table-cell">{{ article.couleur }}</td>
-                <td class="d-none d-md-table-cell">{{ article.taille }}</td>
-                <td class="d-none d-md-table-cell">{{ article.pointure }}</td>
-                <td class="d-none d-md-table-cell">{{ article.minCmd }}</td>
-                <td class="d-none d-md-table-cell">{{ article.minCmdUnit }}</td>
-                <td class="d-none d-md-table-cell">{{ article.poids }}</td>
-                <td class="d-none d-md-table-cell">{{ article.longueur }}</td>
-                <td class="d-none d-md-table-cell">{{ article.largeur }}</td>
-                <td class="d-none d-md-table-cell">{{ article.hauteur }}</td>
-                <td class="text-center">{{ article.disponible ? '<i class="fa-solid fa-circle-check"></i>' : '<i class="fa-regular fa-circle"></i>' }}</td>
-                <td class="text-center">
+                <td class="align-middle">{{ article.label }}</td>
+                <td class="align-middle">{{ article.category.label }}</td>
+                <td class="d-none d-md-table-cell align-middle">{{ article.couleur }}</td>
+                <td class="d-none d-md-table-cell align-middle">{{ article.taille }}</td>
+                <td class="d-none d-md-table-cell align-middle">{{ article.pointure }}</td>
+                <td class="d-none d-md-table-cell align-middle">{{ article.minCmd }}</td>
+                <td class="d-none d-md-table-cell align-middle">{{ article.minCmdUnit }}</td>
+                <td class="d-none d-md-table-cell align-middle">{{ article.poids }}</td>
+                <td class="d-none d-md-table-cell align-middle">{{ article.longueur }}</td>
+                <td class="d-none d-md-table-cell align-middle">{{ article.largeur }}</td>
+                <td class="d-none d-md-table-cell align-middle">{{ article.hauteur }}</td>
+                <td class="text-center align-middle">{{ article.disponible ? '<i class="fa-solid fa-circle-check"></i>' : '<i class="fa-regular fa-circle"></i>' }}</td>
+                <td class="text-center align-middle">
                     <a href="{{ path('app_article_edit', {'id': article.id}) }}">
                         <i class="fa-solid fa-pen"></i>
                     </a>
