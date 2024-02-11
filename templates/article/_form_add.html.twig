@@ -1,0 +1,5 @@
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button class="btn btn-primary my-2">{{ button_label|default('Enregistrer') }}</button>
+    <a href="{{ path('app_article_index') }}" class="btn btn-secondary my-2">{{ button_label|default('Annuler') }}</a>
+{{ form_end(form) }}
