@@ -14,7 +14,16 @@ class ArticleType extends AbstractType
         $builder
             ->add('image')
             ->add('label')
-            ->add('category')
+            ->add('category', EntityType::class, [
+                // looks for choices from this entity
+                'class' => Article::class,
+
+                'choice_label' => 'label',
+
+                // used to render a select box, check boxes or radios
+                // 'multiple' => true,
+                // 'expanded' => true,
+            ])
             ->add('couleur')
             ->add('taille')
             ->add('pointure')
