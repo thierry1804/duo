@@ -3,7 +3,11 @@
 {% block title %}Article index{% endblock %}
 
 {% block body %}
-    <h1>Articles <a href="{{ path('app_article_add') }}"><i class="fa-solid fa-circle-plus"></i></a></h1>
+    <h1>
+        Articles
+        <a href="{{ path('app_article_add') }}" title="Ajouter un nouvel article"><i class="fa-solid fa-circle-plus"></i></a>
+        <a href="{{ path('app_category_index') }}" title="Liste des catégories"><i class="fa-solid fa-layer-group"></i></a>
+    </h1>
 
     <table class="table table-striped">
         <thead>
