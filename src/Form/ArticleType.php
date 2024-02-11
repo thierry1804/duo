@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Article;
+use App\Entity\Category;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -17,7 +18,7 @@ class ArticleType extends AbstractType
             ->add('label')
             ->add('category', EntityType::class, [
                 // looks for choices from this entity
-                'class' => Article::class,
+                'class' => Category::class,
 
                 'choice_label' => 'label',
 
