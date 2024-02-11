@@ -4,8 +4,13 @@ namespace App\Form;
 
 use App\Entity\Article;
 use App\Entity\Category;
+use Doctrine\DBAL\Types\BooleanType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -14,8 +19,6 @@ class ArticleType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('image')
-            ->add('label')
             ->add('category', EntityType::class, [
                 // looks for choices from this entity
                 'class' => Category::class,
@@ -26,18 +29,49 @@ class ArticleType extends AbstractType
                 // 'multiple' => true,
                 // 'expanded' => true,
             ])
-            ->add('couleur')
-            ->add('taille')
-            ->add('pointure')
-            ->add('minCmd')
-            ->add('minCmdUnit')
-            ->add('poids')
-            ->add('longueur')
-            ->add('largeur')
-            ->add('hauteur')
-            ->add('disponible')
-            ->add('createdAt')
-            ->add('editedAt')
+            ->add('image', FileType::class, [
+                'label' => 'Image',
+            ])
+            ->add('label', null, [
+                'label' => 'Nom',
+            ])
+            ->add('couleur', null, [
+                'label' => 'Couleur',
+            ])
+            ->add('taille', null, [
+                'label' => 'Taille',
+            ])
+            ->add('pointure', NumberType::class, [
+                'label' => 'Pointure',
+            ])
+            ->add('minCmd', NumberType::class, [
+                'label' => 'Quantité minimum de commande',
+            ])
+            ->add('minCmdUnit', ChoiceType::class, [
+                'label' => 'Unité de commande',
+                'choices' => [
+                    'pièce' => 'pièce',
+                    'kg' => 'kg',
+                    'mètre' => 'mètre',
+                    'litre' => 'litre',
+                    'carton' => 'carton',
+                ],
+            ])
+            ->add('poids', NumberType::class, [
+                'label' => 'Poids',
+            ])
+            ->add('longueur', NumberType::class, [
+                'label' => 'Longueur',
+            ])
+            ->add('largeur', NumberType::class, [
+                'label' => 'Largeur',
+            ])
+            ->add('hauteur', NumberType::class, [
+                'label' => 'Hauteur',
+            ])
+            ->add('disponible', CheckboxType::class, [
+                'label' => 'Disponible',
+            ])
         ;
     }
 
