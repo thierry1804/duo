@@ -1,4 +1,6 @@
 {{ form_start(form) }}
     {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    <button class="btn btn-primary my-2">{{ button_label|default('Enregistrer') }}</button>
+    <button name="saveandnew" value="1" class="btn btn-dark my-2">{{ button_label|default('Enregistrer et ajouter de nouveau') }}</button>
+    <a href="{{ path('app_category_index') }}" class="btn btn-secondary my-2">{{ button_label|default('Annuler') }}</a>
 {{ form_end(form) }}

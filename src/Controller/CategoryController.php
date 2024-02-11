@@ -33,6 +33,9 @@ class CategoryController extends AbstractController
             $entityManager->persist($category);
             $entityManager->flush();
 
+            if ($request->request->get('saveandnew')) {
+                return $this->redirectToRoute('app_category_new');
+            }
             return $this->redirectToRoute('app_category_index', [], Response::HTTP_SEE_OTHER);
         }
 

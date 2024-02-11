@@ -1,28 +1,25 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Category index{% endblock %}
+{% block title %}Les catégories{% endblock %}
 
 {% block body %}
-    <h1>Category index</h1>
+    <h1>Catégories  <a href="{{ path('app_category_new') }}"><i class="fa-solid fa-circle-plus"></i></a></h1>
 
-    <table class="table">
+    <table class="table table-striped">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Label</th>
                 <th>Description</th>
-                <th>actions</th>
+                <th class="text-center">Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for category in categories %}
             <tr>
-                <td>{{ category.id }}</td>
                 <td>{{ category.label }}</td>
                 <td>{{ category.description }}</td>
-                <td>
-                    <a href="{{ path('app_category_show', {'id': category.id}) }}">show</a>
-                    <a href="{{ path('app_category_edit', {'id': category.id}) }}">edit</a>
+                <td class="text-center">
+                    <a href="{{ path('app_category_edit', {'id': category.id}) }}"><i class="fa-solid fa-pen"></i></a>
                 </td>
             </tr>
         {% else %}
@@ -32,6 +29,4 @@
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('app_category_new') }}">Create new</a>
 {% endblock %}
