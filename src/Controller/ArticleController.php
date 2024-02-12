@@ -16,10 +16,15 @@ use Symfony\Component\Routing\Attribute\Route;
 class ArticleController extends AbstractController
 {
     #[Route('/', name: 'app_article_index', methods: ['GET'])]
-    public function index(ArticleRepository $articleRepository): Response
+    public function index(Request $request, ArticleRepository $articleRepository): Response
     {
+        $offset = $request->query->getInt('offset', 0);
+        $paginator = $articleRepository->getArticlesPaginator($offset);
+
         return $this->render('article/index.html.twig', [
-            'articles' => $articleRepository->findBy([], ['createdAt' => 'DESC']),
+            'articles' => $paginator,
+            'previous' => $offset - ArticleRepository::PAGINATOR_PER_PAGE,
+            'next' => min(count($paginator), $offset + ArticleRepository::PAGINATOR_PER_PAGE),
             'uploadsPath' => $this->getParameter('images_directory'),
         ]);
     }

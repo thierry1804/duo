@@ -63,4 +63,10 @@
         {% endfor %}
         </tbody>
     </table>
+    {% if previous >= 0 %}
+        <a href="{{ path('app_article_index', { offset: previous }) }}"><i class="fa-solid fa-circle-chevron-left"></i></a>
+    {% endif %}
+    {% if next < articles|length %}
+        <a href="{{ path('app_article_index', { offset: next }) }}"><i class="fa-solid fa-circle-chevron-right"></i></a>
+    {% endif %}
 {% endblock %}
