@@ -12,6 +12,7 @@
     <table class="table table-striped">
         <thead>
             <tr>
+                <th>ID</th>
                 <th width="200">Image</th>
                 <th>Nom</th>
                 <th>Catégorie</th>
@@ -36,6 +37,7 @@
                         <img src="{{ asset('uploads/' ~ article.image) }}" class="rounded img-thumbnail" />
                     </a>
                 </td>
+                <td class="align-middle">{{ article.id }}</td>
                 <td class="align-middle">{{ article.label }}</td>
                 <td class="align-middle">{{ article.category.label }}</td>
                 <td class="d-none d-md-table-cell align-middle">{{ article.couleur }}</td>
