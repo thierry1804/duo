@@ -32,7 +32,7 @@
         <tbody>
         {% for article in articles %}
             <tr>
-                <td class="align-middle"><small>DUO</small><br>#{{ article.id }}</td>
+                <td class="align-middle text-center small" style="font-size: xx-small">DUO<br>#{{ article.id }}</td>
                 <td>
                     <a href="{{ asset('uploads/' ~ article.image) }}" target="_blank">
                         <img src="{{ asset('uploads/' ~ article.image) }}" class="rounded img-thumbnail" />
