@@ -91,8 +91,11 @@ class ArticleController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_article_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Article $article, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Article $article, EntityManagerInterface $entityManager,
+                         ArticleRepository $articleRepository): Response
     {
+        $articleBefore = $articleRepository->getArticleBeforeId($article->getId());
+        $articleAfter = $articleRepository->getArticleAfterId($article->getId());
         $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
 
@@ -116,6 +119,8 @@ class ArticleController extends AbstractController
         return $this->render('article/edit.html.twig', [
             'article' => $article,
             'form' => $form,
+            'articleBefore' => $articleBefore,
+            'articleAfter' => $articleAfter,
         ]);
     }
 

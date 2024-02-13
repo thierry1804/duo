@@ -3,7 +3,17 @@
 {% block title %}Fiche article{% endblock %}
 
 {% block body %}
-    <h1 class="mt-2">Fiche article</h1>
+    <h1 class="mt-2 position-relative">
+        Fiche article
+        <span class="position-absolute top-50 end-0 translate-middle">
+        {% if articleBefore|length %}
+            <a href="{{ path('app_article_edit', { id: articleBefore.id }) }}"><i class="fa-solid fa-circle-chevron-left"></i></a>
+        {% endif %}
+        {% if articleAfter|length %}
+            <a href="{{ path('app_article_edit', { id: articleAfter.id }) }}"><i class="fa-solid fa-circle-chevron-right"></i></a>
+        {% endif %}
+        </span>
+    </h1>
 
     {{ include('article/_form.html.twig') }}
 

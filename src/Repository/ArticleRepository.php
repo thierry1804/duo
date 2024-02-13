@@ -36,6 +36,30 @@ class ArticleRepository extends ServiceEntityRepository
         return new Paginator($query);
     }
 
+    public function getArticleAfterId(int $id): ?Article
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.id > :id')
+            ->setParameter('id', $id)
+            ->orderBy('a.id', 'ASC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
+    public function getArticleBeforeId(int $id): ?Article
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.id < :id')
+            ->setParameter('id', $id)
+            ->orderBy('a.id', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
 //    /**
 //     * @return Article[] Returns an array of Article objects
 //     */
