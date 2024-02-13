@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block body %}
+    <h1>DUO Import MDG</h1>
+    <div class="">
+        <div class="row">
+            <div class="col">
+                <a href="{{ path('app_category_index') }}" class="btn btn-outline-primary m-2 p-6 w-100 fs-1">
+                    <i class="fa-solid fa-layer-group"></i>
+                    <br />Catégories
+                </a>
+            </div>
+            <div class="col">
+                <a href="{{ path('app_article_index') }}" class="btn btn-outline-primary m-2 p-6 w-100 fs-1">
+                    <i class="fa-solid fa-dolly"></i>
+                    <br />Articles
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
