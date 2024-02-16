@@ -7,6 +7,8 @@ use App\Form\ArticlesType;
 use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Imagine\Gd\Imagine;
+use Imagine\Image\Point;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -65,6 +67,14 @@ class ArticleController extends AbstractController
                     $this->getParameter('images_directory'),
                     $fichier
                 );
+
+                $imagine = new Imagine();
+                $image = $imagine->open($this->getParameter('images_directory').'/'.$fichier);
+                $watermarkPath = $this->getParameter('watermarkPath');
+                $watermark = $imagine->open($watermarkPath);
+                $watermarkPosition = new Point(0, 0);
+                $image->paste($watermark, $watermarkPosition);
+                $image->save($this->getParameter('images_directory').'/'.$fichier, ['quality' => 100]);
 
                 $article = new Article();
                 $article->setCategory($category);
