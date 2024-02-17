@@ -69,11 +69,16 @@ class ArticleRepository extends ServiceEntityRepository
      */
     public function getArticlesByCategory(Category $category, int $sample = 5): array
     {
-        return $this->createQueryBuilder('a')
+        $qry = $this->createQueryBuilder('a')
             ->andWhere('a.category = :category')
             ->setParameter('category', $category)
-            ->orderBy('a.id', 'ASC')
-            ->setMaxResults($sample)
+            ->orderBy('a.id', 'ASC');
+
+        if ($sample > 0) {
+            $qry->setMaxResults($sample);
+        }
+
+        return $qry
             ->getQuery()
             ->getResult();
     }
