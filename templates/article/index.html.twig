@@ -5,8 +5,10 @@
 {% block body %}
     <h1 class="mt-3 float-start">
         Articles <small style="font-size: xx-small" class="badge bg-secondary translate-middle badge rounded-pill">{{ articles|length }}</small>
+        {% if is_granted('ROLE_ADMIN') %}
         <a href="{{ path('app_article_add') }}" title="Ajouter un nouvel article"><i class="fa-solid fa-circle-plus"></i></a>
         <a href="{{ path('app_category_index') }}" title="Liste des catégories"><i class="fa-solid fa-layer-group"></i></a>
+        {% endif %}
         <a href="{{ path('app_duo') }}"><i class="fa-solid fa-house"></i></a>
     </h1>
 
@@ -35,9 +37,7 @@
             <tr>
                 <td class="align-middle text-center small" style="font-size: xx-small">DUO<br>#{{ article.id }}</td>
                 <td>
-                    <a href="{{ asset('uploads/' ~ article.image) }}" target="_blank">
-                        <img src="{{ asset('uploads/' ~ article.image) }}" class="rounded img-thumbnail" />
-                    </a>
+                    <img src="{{ asset('uploads/' ~ article.image) }}" class="rounded img-thumbnail" />
                 </td>
                 <td class="align-middle">{{ article.label }}</td>
                 <td class="align-middle">{{ article.category.label }}</td>
@@ -52,9 +52,15 @@
                 <td class="d-none d-md-table-cell align-middle">{{ article.hauteur }}</td>
                 <td class="text-center align-middle">{{ article.disponible ? '<i class="fa-solid fa-circle-check"></i>' : '<i class="fa-regular fa-circle"></i>' }}</td>
                 <td class="text-center align-middle">
+                    {% if is_granted('ROLE_ADMIN') %}
                     <a href="{{ path('app_article_edit', {'id': article.id}) }}">
                         <i class="fa-solid fa-pen"></i>
                     </a>
+                    {% else %}
+                    <a href="{{ path('app_article_show', {'id': article.id}) }}">
+                        <i class="fa-solid fa-eye"></i>
+                    </a>
+                    {% endif %}
                 </td>
             </tr>
         {% else %}

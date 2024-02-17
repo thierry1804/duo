@@ -1,78 +1,84 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Article{% endblock %}
+{% block title %}Article DUO#{{ article.id }}{% endblock %}
 
 {% block body %}
-    <h1>Article</h1>
+    <h1 class="mt-2 position-relative">
+        Article DUO#{{ article.id }}
+        <span class="position-absolute top-50 end-0 translate-middle">
+            <a href="{{ path('app_article_index') }}"><i class="fa-solid fa-dolly"></i></a>
+        {% if articleBefore|length %}
+            <a href="{{ path('app_article_show', { id: articleBefore.id }) }}"><i class="fa-solid fa-circle-chevron-left"></i></a>
+        {% endif %}
+        {% if articleAfter|length %}
+            <a href="{{ path('app_article_show', { id: articleAfter.id }) }}"><i class="fa-solid fa-circle-chevron-right"></i></a>
+        {% endif %}
+        </span>
+    </h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ article.id }}</td>
-            </tr>
-            <tr>
-                <th>Image</th>
-                <td>{{ article.image }}</td>
-            </tr>
-            <tr>
-                <th>Label</th>
-                <td>{{ article.label }}</td>
-            </tr>
-            <tr>
-                <th>Couleur</th>
-                <td>{{ article.couleur }}</td>
-            </tr>
-            <tr>
-                <th>Taille</th>
-                <td>{{ article.taille }}</td>
-            </tr>
-            <tr>
-                <th>Pointure</th>
-                <td>{{ article.pointure }}</td>
-            </tr>
-            <tr>
-                <th>MinCmd</th>
-                <td>{{ article.minCmd }}</td>
-            </tr>
-            <tr>
-                <th>MinCmdUnit</th>
-                <td>{{ article.minCmdUnit }}</td>
-            </tr>
-            <tr>
-                <th>Poids</th>
-                <td>{{ article.poids }}</td>
-            </tr>
-            <tr>
-                <th>Longueur</th>
-                <td>{{ article.longueur }}</td>
-            </tr>
-            <tr>
-                <th>Largeur</th>
-                <td>{{ article.largeur }}</td>
-            </tr>
-            <tr>
-                <th>Hauteur</th>
-                <td>{{ article.hauteur }}</td>
-            </tr>
-            <tr>
-                <th>Disponible</th>
-                <td>{{ article.disponible ? 'Yes' : 'No' }}</td>
-            </tr>
-            <tr>
-                <th>CreatedAt</th>
-                <td>{{ article.createdAt ? article.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>EditedAt</th>
-                <td>{{ article.editedAt ? article.editedAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_article_index') }}">back to list</a>
-
-    <a href="{{ path('app_article_edit', {'id': article.id}) }}">edit</a>
-
-    {{ include('article/_delete_form.html.twig') }}
+    <div class="row">
+        <div class="col-md-4 col-12">
+            {% if article.image %}
+                <img src="{{ asset('uploads/' ~ article.image) }}" class="rounded img-thumbnail mx-auto d-block" />
+            {% endif %}
+        </div>
+        <div class="col-md-8 col-12">
+            <table class="table table-striped">
+                <tbody>
+                    <tr>
+                        <th class="w-25">Réf.</th>
+                        <td>DUO#{{ article.id }}</td>
+                    </tr>
+                    <tr>
+                        <th>Nom</th>
+                        <td>{{ article.label }}</td>
+                    </tr>
+                    <tr>
+                        <th>Catégorie</th>
+                        <td>{{ article.category.label }}</td>
+                    </tr>
+                    <tr>
+                        <th>Couleur dispo</th>
+                        <td>{{ article.couleur }}</td>
+                    </tr>
+                    <tr>
+                        <th>Taille dispo</th>
+                        <td>{{ article.taille }}</td>
+                    </tr>
+                    <tr>
+                        <th>Pointure dispo</th>
+                        <td>{{ article.pointure }}</td>
+                    </tr>
+                    <tr>
+                        <th>Qté min de commande</th>
+                        <td>{{ article.minCmd }}</td>
+                    </tr>
+                    <tr>
+                        <th>Unité de commande</th>
+                        <td>{{ article.minCmdUnit }}</td>
+                    </tr>
+                    <tr>
+                        <th>Poids (g)</th>
+                        <td>{{ article.poids }}</td>
+                    </tr>
+                    <tr>
+                        <th>Longueur (cm)</th>
+                        <td>{{ article.longueur }}</td>
+                    </tr>
+                    <tr>
+                        <th>Largeur (cm)</th>
+                        <td>{{ article.largeur }}</td>
+                    </tr>
+                    <tr>
+                        <th>Hauteur (cm)</th>
+                        <td>{{ article.hauteur }}</td>
+                    </tr>
+                    <tr>
+                        <th>Disponible</th>
+                        <td>{{ article.disponible ? '<i class="fa-solid fa-circle-check"></i>' : '<i class="fa-regular fa-circle"></i>' }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}
