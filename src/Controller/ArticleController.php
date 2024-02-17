@@ -7,6 +7,8 @@ use App\Form\ArticlesType;
 use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Imagine\Gd\Imagine;
+use Imagine\Image\Point;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,26 +31,6 @@ class ArticleController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_article_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $article = new Article();
-        $form = $this->createForm(ArticleType::class, $article);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($article);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_article_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('article/new.html.twig', [
-            'article' => $article,
-            'form' => $form,
-        ]);
-    }
-
     #[Route('/add', name: 'app_article_add', methods: ['GET', 'POST'])]
     public function add(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -65,6 +47,14 @@ class ArticleController extends AbstractController
                     $this->getParameter('images_directory'),
                     $fichier
                 );
+
+                $imagine = new Imagine();
+                $image = $imagine->open($this->getParameter('images_directory').'/'.$fichier);
+                $watermarkPath = $this->getParameter('watermark_directory');
+                $watermark = $imagine->open($watermarkPath);
+                $watermarkPosition = new Point(0, 0);
+                $image->paste($watermark, $watermarkPosition);
+                $image->save($this->getParameter('images_directory').'/'.$fichier);
 
                 $article = new Article();
                 $article->setCategory($category);
