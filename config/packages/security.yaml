@@ -24,7 +24,7 @@ security:
 
             remember_me:
                 secret: '%kernel.secret%'
-                lifetime: 30d # 30 days in seconds
+                lifetime: 1209600 # 14 days in seconds
                 path: /
                 always_remember_me: true
 
