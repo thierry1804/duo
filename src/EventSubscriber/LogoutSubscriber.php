@@ -17,21 +17,7 @@ class LogoutSubscriber implements EventSubscriberInterface
     }
     public function onLogoutEvent(LogoutEvent $event): void
     {
-        // get the security token of the session that is about to be logged out
-        $token = $event->getToken();
-
-        // get the current request
-        $request = $event->getRequest();
-
-        // get the current response, if it is already set by another listener
-        $response = $event->getResponse();
-
-        // configure a custom logout response to the homepage
-        $response = new RedirectResponse(
-            $this->urlGenerator->generate('app_duo'),
-            Response::HTTP_SEE_OTHER
-        );
-        $event->setResponse($response);
+        $event->getRequest()->getSession()->invalidate();
     }
 
     #[ArrayShape([LogoutEvent::class => "string"])]
