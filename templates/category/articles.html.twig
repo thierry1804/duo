@@ -2,9 +2,18 @@
 
 {% block title %}Articles de la catégorie {{ category.label }}{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .app-sticky-top {
+            top: 64px;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
     <div class="col-3 d-none d-md-block">
-        <div class="card mb-2 border-0">
+        <div class="card mb-2 border-0 sticky-top app-sticky-top">
             <div class="card-body">
                 <h5 class="card-title">Catégories</h5>
                 <ul class="list-group list-group-flush small">
