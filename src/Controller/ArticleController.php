@@ -56,7 +56,7 @@ class ArticleController extends AbstractController
                 $watermarkPath = $this->getParameter('watermark_directory');
                 $watermark = $imagine->open($watermarkPath);
                 $watermark->resize(new Box($imageSize->getWidth() / 2, $imageSize->getWidth() / 2));
-                $watermarkPosition = new Point(0, 0);
+                $watermarkPosition = new Point(0, $imageSize->getHeight() - ($imageSize->getWidth() / 2));
                 $image->paste($watermark, $watermarkPosition);
                 $image->save($this->getParameter('images_directory').'/'.$fichier);
 
