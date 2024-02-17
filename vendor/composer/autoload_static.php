@@ -128,6 +128,10 @@ class ComposerStaticInit54c05e64f01f49eb136e9af7b3075bdd
             'Monolog\\' => 8,
             'Masterminds\\' => 12,
         ),
+        'I' => 
+        array (
+            'Imagine\\' => 8,
+        ),
         'E' => 
         array (
             'Egulias\\EmailValidator\\' => 23,
@@ -507,6 +511,10 @@ class ComposerStaticInit54c05e64f01f49eb136e9af7b3075bdd
         'Masterminds\\' => 
         array (
             0 => __DIR__ . '/..' . '/masterminds/html5/src',
+        ),
+        'Imagine\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/imagine/imagine/src',
         ),
         'Egulias\\EmailValidator\\' => 
         array (
