@@ -21,6 +21,29 @@ class CategoryRepository extends ServiceEntityRepository
         parent::__construct($registry, Category::class);
     }
 
+    /**
+     * @throws \Doctrine\DBAL\Exception
+     */
+    public function getCategories(): array
+    {
+        $sql = "
+            select c.id, c.label, count(a.id) as nb
+            from article a
+            inner join category c on c.id = a.category_id 
+            group by c.id
+            having count(a.id) > 0
+            order by c.label asc 
+        ";
+
+        $entityManager = $this->getEntityManager();
+
+        $cnx = $entityManager->getConnection();
+
+        $results = $cnx->executeQuery($sql);
+
+        return $results->fetchAllAssociative();
+    }
+
 //    /**
 //     * @return Category[] Returns an array of Category objects
 //     */
