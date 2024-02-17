@@ -23,7 +23,37 @@
     </head>
     <body>
         <div class="container-fluid">
-        {% block body %}{% endblock %}
+            <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="{{ path('app_duo') }}">
+                        <img src="{{ asset('logo.jpg') }}" alt="" height="24" />
+                        <strong>Duo Import MDG</strong>
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="{{ path('app_duo') }}">Accueil</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="">Qui sommes-nous ?</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="">Catalogue</a>
+                            </li>
+                        </ul>
+                        <form class="d-flex">
+                            <div class="input-group">
+                                <input class="form-control" type="search" placeholder="Rechercher" aria-label="Search">
+                                <button class="btn btn-outline-success" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </nav>
+            {% block body %}{% endblock %}
         </div>
         {% block javascripts %}
             <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js" integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>

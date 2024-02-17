@@ -3,9 +3,9 @@
 {% block title %}Article DUO#{{ article.id }}{% endblock %}
 
 {% block body %}
-    <h1 class="mt-2 position-relative">
-        Article DUO#{{ article.id }}
-        <span class="position-absolute top-50 end-0 translate-middle">
+    <h1 class="mt-5 pt-2 position-relative">
+        Article <br>DUO#{{ article.id }}
+        <span class="position-absolute bottom-0 end-0 translate-bottom">
             <a href="{{ path('app_article_index') }}"><i class="fa-solid fa-dolly"></i></a>
         {% if articleBefore|length %}
             <a href="{{ path('app_article_show', { id: articleBefore.id }) }}"><i class="fa-solid fa-circle-chevron-left"></i></a>
