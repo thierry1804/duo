@@ -3,7 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Article;
+use App\Entity\Category;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -58,6 +60,22 @@ class ArticleRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult()
         ;
+    }
+
+    /**
+     * @param Category $category
+     * @param int $sample
+     * @return array
+     */
+    public function getArticlesByCategory(Category $category, int $sample = 5): array
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.category = :category')
+            ->setParameter('category', $category)
+            ->orderBy('a.id', 'ASC')
+            ->setMaxResults($sample)
+            ->getQuery()
+            ->getResult();
     }
 
 //    /**
