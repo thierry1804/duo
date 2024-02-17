@@ -8,6 +8,8 @@ use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Imagine\Gd\Imagine;
+use Imagine\Image\Box;
+use Imagine\Image\ImageInterface;
 use Imagine\Image\Point;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -50,8 +52,10 @@ class ArticleController extends AbstractController
 
                 $imagine = new Imagine();
                 $image = $imagine->open($this->getParameter('images_directory').'/'.$fichier);
+                $imageSize = $this->getSizeOfAnImage($image);
                 $watermarkPath = $this->getParameter('watermark_directory');
                 $watermark = $imagine->open($watermarkPath);
+                $watermark->resize(new Box($imageSize->getWidth() / 2, $imageSize->getWidth() / 2));
                 $watermarkPosition = new Point(0, 0);
                 $image->paste($watermark, $watermarkPosition);
                 $image->save($this->getParameter('images_directory').'/'.$fichier);
@@ -123,5 +127,16 @@ class ArticleController extends AbstractController
         }
 
         return $this->redirectToRoute('app_article_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    /**
+     * @param ImageInterface $image
+     * @return Box
+     */
+    private function getSizeOfAnImage(ImageInterface $image): Box
+    {
+        $size = $image->getSize();
+
+        return new Box($size->getWidth(), $size->getHeight());
     }
 }
