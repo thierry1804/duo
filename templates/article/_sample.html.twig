@@ -1,10 +1,16 @@
-<div class="row mb-3">
-{% for article in articles %}
-    <div class="card col-2">
-        <img src="{{ asset('uploads/' ~ article.image) }}" class="card-img-top" alt="...">
-        <div class="card-body">
-            <h5 class="card-title">DUO#{{ article.id }}</h5>
+<div class="row">
+    {% for article in articles %}
+    <div class="col-12 col-sm-6 col-md-4 col-lg-2 mb-4">
+        <div class="card">
+            <div class="bg-image hover-zoom ripple" data-mdb-ripple-color="light">
+                <img src="{{ asset('uploads/' ~ article.image) }}" class="w-100" alt="...">
+            </div>
+            <div class="card-body">
+                <a href="" class="text-reset">
+                    <h5 class="card-title mb-3">DUO#{{ article.id }}</h5>
+                </a>
+            </div>
         </div>
     </div>
-{% endfor %}
+    {% endfor %}
 </div>
