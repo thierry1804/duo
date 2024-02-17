@@ -1,22 +1,18 @@
 <div class="row">
     {% for article in articles %}
-    <div class="col-12 mb-2 d-sm-none">
-        <div class="card">
-            <div class="row g-0">
-                <div class="col-4" data-mdb-ripple-color="light">
-                    <img src="{{ asset('uploads/' ~ article.image) }}" class="w-100" alt="...">
-                </div>
-                <div class="col-8">
-                    <div class="card-body p-1">
-                        <p class="card-title mb-1">DUO#{{ article.id }}</p>
-                    </div>
-                </div>
+    <div class="col-4 mb-2 d-sm-none position-relative overflow-hidden h-50">
+        <div class="card bg-dark text-white">
+            <div class="card-img-top embed-responsive embed-responsive-1by1" style="object-fit: cover; width: 100%;height: 20vw;">
+                <img src="{{ asset('uploads/' ~ article.image) }}" class="card-img-top embed-responsive-item" alt="...">
+            </div>
+            <div class="card-img-overlay position-relative">
+                <p class="card-title mb-1 position-absolute end-0 bottom-0 px-1 bg-dark small" style="font-size: xx-small">DUO#{{ article.id }}</p>
             </div>
         </div>
     </div>
     <div class="col-12 col-sm-4 col-md-3 col-lg-2 mb-2 d-none d-sm-block">
         <div class="card">
-            <div class="bg-image hover-zoom ripple" data-mdb-ripple-color="light">
+            <div>
                 <img src="{{ asset('uploads/' ~ article.image) }}" class="w-100" alt="...">
             </div>
             <div class="card-body p-1">
