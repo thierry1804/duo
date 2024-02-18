@@ -3,23 +3,72 @@
 {% block title %}Accueil{% endblock %}
 
 {% block body %}
-    <h1>DUO Import MDG</h1>
-    <div class="">
-        <div class="row">
-            {% if is_granted('ROLE_ADMIN') %}
-            <div class="col">
-                <a href="{{ path('app_category_index') }}" class="btn btn-outline-primary m-2 p-6 w-100 fs-1">
-                    <i class="fa-solid fa-layer-group"></i>
-                    <br />Catégories
-                </a>
-            </div>
-            {% endif %}
-            <div class="col">
-                <a href="{{ path('app_article_index') }}" class="btn btn-outline-primary m-2 p-6 w-100 fs-1">
-                    <i class="fa-solid fa-dolly"></i>
-                    <br />Articles
-                </a>
+    <div class="col-3 d-none d-md-block">
+        <div class="card mb-2">
+            <div class="card-body">
+                <h5 class="card-title">Ce que nous faisons</h5>
+                <p class="card-text">Nous vous aidons à sélectionner, acheter et importer les articles qui vous intéressent depuis la Chine.</p>
+                <a href="#" class="card-link">En savoir plus</a>
             </div>
         </div>
+        <div class="card mb-2">
+            <div class="card-body overflow-hidden">
+                <h5 class="card-title">Nous contacter</h5>
+                <table class="table table-sm small">
+                    <tbody>
+                        <tr>
+                            <td><i class="fa-solid fa-phone"></i></td>
+                            <td>
+                                <a href="tel:+261384271168" class="text-decoration-none">
+                                    +261 38 42 711 68
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><i class="fa-solid fa-envelope"></i></td>
+                            <td>
+                                <a href="mailto:duoimportmdg@protonmail.com" class="text-decoration-none">
+                                    duoimportmdg@protonmail.com
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="border-0"><i class="fa-solid fa-location-dot"></i></td>
+                            <td class="border-0">
+                                <a href="https://maps.app.goo.gl/sifQPRGb4ZWTKG2XA" target="_blank" class="text-decoration-none">
+                                    Ankadindravola Ivato, Antananarivo Madagascar
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card mb-2 border-0">
+            <div class="card-body">
+                <h5 class="card-title">Catégories</h5>
+                <ul class="list-group list-group-flush small">
+                    {% for category in categories %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center small">
+                        <a href="{{ path('app_category_articles', { id: category.id }) }}" class="text-decoration-none stretched-link">
+                            {{ category.label }}
+                        </a>
+                        <span class="badge bg-secondary rounded-pill small">{{ category.nb }}</span>
+                    </li>
+                    {% else %}
+                    <li class="list-group-item small">Aucune catégorie</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        {% for category in categories %}
+        <h4>
+            {{ category.label }}
+            <span class="badge bg-primary rounded-pill small ms-2">{{ category.nb }}</span>
+        </h4>
+            {{ render(path('app_article_sample', {id: category.id})) }}
+        {% endfor %}
     </div>
 {% endblock %}

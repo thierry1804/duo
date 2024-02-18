@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Entity\Category;
 use App\Form\ArticlesType;
 use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
@@ -135,6 +136,15 @@ class ArticleController extends AbstractController
         }
 
         return $this->redirectToRoute('app_article_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/sample/{id}', name: 'app_article_sample', methods: ['GET'])]
+    public function getSampleArticlesByCategory(Category $category, ArticleRepository $articleRepository): Response
+    {
+        $articles = $articleRepository->getArticlesByCategory($category);
+        return $this->render('article/_sample.html.twig', [
+            'articles' => $articles,
+        ]);
     }
 
     /**
