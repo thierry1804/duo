@@ -64,10 +64,10 @@
     </div>
     <div class="col">
         {% for category in categories %}
-        <h6>
+        <h4>
             {{ category.label }}
             <span class="badge bg-primary rounded-pill small ms-2">{{ category.nb }}</span>
-        </h6>
+        </h4>
             {{ render(path('app_article_sample', {id: category.id})) }}
         {% endfor %}
     </div>
