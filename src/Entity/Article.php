@@ -58,6 +58,9 @@ class Article
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $editedAt = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?array $keywords = null;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
@@ -244,6 +247,18 @@ class Article
     public function setEditedAt(?\DateTimeImmutable $editedAt): static
     {
         $this->editedAt = $editedAt;
+
+        return $this;
+    }
+
+    public function getKeywords(): ?array
+    {
+        return $this->keywords;
+    }
+
+    public function setKeywords(?array $keywords): static
+    {
+        $this->keywords = $keywords;
 
         return $this;
     }
