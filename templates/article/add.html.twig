@@ -2,8 +2,32 @@
 
 {% block title %}Ajouter des articles{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('filepond.css') }}" rel="stylesheet">
+{% endblock %}
+
 {% block body %}
     <h1>Ajouter des articles dans le catalogue</h1>
 
     {{ include('article/_form_add.html.twig') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://unpkg.com/filepond/dist/filepond.min.js"></script>
+    <script src="https://unpkg.com/jquery-filepond/filepond.jquery.js"></script>
+    <script type="text/javascript">
+        let category = $('#articles_category').val();
+        let chemin = '{{ path('app_article_image_upload', {'category': 9999999}) }}';
+        $('#articles_images')
+            .filepond({
+                allowMultiple: true,
+                server: chemin,
+            })
+            .on('FilePond:processfile', (e) => {
+                console.log('File added', e);
+            })
+        ;
+    </script>
 {% endblock %}
