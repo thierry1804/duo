@@ -82,7 +82,7 @@ class ArticleController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_article_show', methods: ['GET'])]
+    #[Route('/{id}', name: 'app_article_show', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function show(Article $article, ArticleRepository $articleRepository): Response
     {
         $articleBefore = $articleRepository->getArticleBeforeId($article->getId());
@@ -130,7 +130,7 @@ class ArticleController extends AbstractController
     }
 
     #[IsGranted('ROLE_ADMIN')]
-    #[Route('/{id}', name: 'app_article_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'app_article_delete', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function delete(Request $request, Article $article, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$article->getId(), $request->request->get('_token'))) {
@@ -151,37 +151,37 @@ class ArticleController extends AbstractController
     }
 
     #[IsGranted('ROLE_ADMIN')]
-    #[Route('/upload/for/{category}', name: 'app_article_image_upload', methods: ['POST'])]
-    public function upload(int $category, Request $request, EntityManagerInterface $entityManager,
+    #[Route('/upload', name: 'app_article_image_upload', methods: ['POST'])]
+    public function upload(Request $request, EntityManagerInterface $entityManager,
                            CategoryRepository $categoryRepository): Response
     {
         $images = $request->files->get('images');
-        $category = $categoryRepository->find($category);
+        $category = $categoryRepository->find($request->request->get('category'));
 
-        foreach ($images as $image) {
-            $fichier = md5(uniqid()).'.'.$image->guessExtension();
-            $image->move(
-                $this->getParameter('images_directory'),
-                $fichier
-            );
+        $fichier = md5(uniqid()).'.'.$images->guessExtension();
+        $images->move(
+            $this->getParameter('images_directory'),
+            $fichier
+        );
 
-            $imagine = new Imagine();
-            $image = $imagine->open($this->getParameter('images_directory').'/'.$fichier);
-            $imageSize = $this->getSizeOfAnImage($image);
-            $watermarkPath = $this->getParameter('watermark_directory');
-            $watermark = $imagine->open($watermarkPath);
-            $watermark->resize(new Box($imageSize->getWidth() / 2, $imageSize->getWidth() / 2));
-            $watermarkPosition = new Point(0, $imageSize->getHeight() - ($imageSize->getWidth() / 2));
-            $image->paste($watermark, $watermarkPosition);
-            $image->save($this->getParameter('images_directory').'/'.$fichier);
+        $imagine = new Imagine();
+        $image = $imagine->open($this->getParameter('images_directory').'/'.$fichier);
+        $imageSize = $this->getSizeOfAnImage($image);
+        $watermarkPath = $this->getParameter('watermark_directory');
+        $watermark = $imagine->open($watermarkPath);
+        $watermark->resize(new Box($imageSize->getWidth() / 2, $imageSize->getWidth() / 2));
+        $watermarkPosition = new Point(0, $imageSize->getHeight() - ($imageSize->getWidth() / 2));
+        $image->paste($watermark, $watermarkPosition);
+        $image->save($this->getParameter('images_directory').'/'.$fichier);
 
-            $article = new Article();
-            $article->setCategory($category);
-            $article->setImage($fichier);
-            $entityManager->persist($article);
-        }
+        $article = new Article();
+        $article->setCategory($category);
+        $article->setImage($fichier);
+        $entityManager->persist($article);
 
         $entityManager->flush();
+
+        return new Response('Images uploaded successfully', Response::HTTP_CREATED);
     }
 
     /**

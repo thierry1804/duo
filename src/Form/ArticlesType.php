@@ -34,20 +34,6 @@ class ArticlesType extends AbstractType
                     'class' => 'form-label'
                 ],
             ])
-            ->add('images', FileType::class, [
-                'label' => 'Images',
-                'multiple' => true,
-                'mapped' => false,
-                'by_reference' => false,
-                'attr' => [
-                    'class' => 'form-control',
-                    'placeholder' => 'Choisissez une ou des images',
-                    'accept' => 'image/*',
-                ],
-                'label_attr' => [
-                    'class' => 'form-label mt-2'
-                ],
-            ])
         ;
     }
 
