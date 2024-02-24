@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+ini_set('max_file_uploads', '22');
+
 use App\Entity\Article;
 use App\Entity\Category;
 use App\Form\ArticlesType;
