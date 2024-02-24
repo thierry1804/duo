@@ -89,6 +89,12 @@
                             e.preventDefault();
                         });
                     });
+                    let isUser = {{ is_granted('ROLE_USER') ? 1 : 0 }};
+                    if (isUser) {
+                        setTimeout(function() {
+                            window.location.href = "{{ path('app_logout') }}";
+                        }, 1800000);
+                    }
                 });
             </script>
         {% endblock %}
