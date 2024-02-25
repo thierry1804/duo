@@ -138,6 +138,18 @@
         .single_advisor_profile:focus .single_advisor_details_info p {
             color: #ffffff;
         }
+
+        @keyframes rotating {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        .rotating {
+            animation: rotating 2s linear infinite;
+        }
     </style>
 {% endblock %}
 

@@ -22,7 +22,11 @@
                         <i class="fa fa-eye"></i>
                     </a>
                 </div>
-                <div class="p-4 position-relative"><a href="#" class="text-decoration-none stretched-link"><i class="fa-solid fa-cart-plus"></i></a></div>
+                <div class="p-4 position-relative">
+                    <a href="javascript:void(0)" data-path="{{ path('app_wishlist_add', {id: article.id}) }}" class="text-decoration-none stretched-link addToCart">
+                        <i class="fa-solid fa-cart-plus"></i>
+                    </a>
+                </div>
             </div>
         </div>
     </div>

@@ -1,0 +1,8 @@
+<li class="nav-item position-relative">
+    <a class="nav-link" href="">
+        <i class="fa-solid fa-cart-shopping"></i>
+        {% if nb > 0 %}
+        <span class="badge bg-danger rounded-pill position-absolute end-0 top-0" style="font-size: xx-small;">{{ nb }}</span>
+        {% endif %}
+    </a>
+</li>
