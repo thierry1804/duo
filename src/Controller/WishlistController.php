@@ -10,6 +10,7 @@ use App\Repository\CategoryRepository;
 use App\Repository\UserRepository;
 use App\Repository\WishlistLineRepository;
 use App\Repository\WishlistRepository;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -110,6 +111,7 @@ class WishlistController extends AbstractController
 
         $wishlistLine->setQuantity($qty);
         $wishlistLine->setDetails($details);
+        $wishlistLine->setUpdatedAt(new DateTimeImmutable());
         $entityManager->persist($wishlistLine);
         $entityManager->flush();
 
