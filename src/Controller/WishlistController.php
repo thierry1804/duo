@@ -92,4 +92,12 @@ class WishlistController extends AbstractController
             'nb' => count($wishlistLines),
         ]);
     }
+
+    #[Route('/{id}/remove', name: 'app_wishlist_remove', methods: ['GET','DELETE'])]
+    public function removeItem(WishlistLine $wishlistLine, EntityManagerInterface $entityManager): Response
+    {
+        $entityManager->remove($wishlistLine);
+        $entityManager->flush();
+        return $this->redirectToRoute('app_wishlist_index');
+    }
 }

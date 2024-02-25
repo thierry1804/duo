@@ -68,27 +68,32 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>Article</th>
-                        <th>Qté</th>
+                        <th width="100">Article</th>
+                        <th width="100">Qté</th>
                         <th>Détails</th>
-                        <th>Actions</th>
+                        <th width="100">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
         {% for item in wishlist.wishlistLines %}
                     <tr>
-                        <td>
+                        <td class="align-middle">
                             <div style="background-image: url('{{ asset('uploads/' ~ item.article.image) }}'); width: 100px;
                                     height: 100px; background-position: center; background-size: cover;">
                             </div>
                         </td>
-                        <td>
-                            <input type="number" class="form-control" value="{{ item.quantity }}">
+                        <td class="align-middle">
+                            DUO#{{ item.article.id }}
+                            <input type="number" class="form-control text-center" value="{{ item.quantity }}">
                         </td>
-                        <td>
-                            <textarea class="form-control"></textarea>
+                        <td class="align-middle">
+                            <textarea class="form-control" rows="4"></textarea>
                         </td>
-                        <td></td>
+                        <td class="align-middle text-center">
+                            <a href="{{ path('app_wishlist_remove', {id: item.id}) }}" class="remove-item text-danger" data-id="{{ item.article.id }}">
+                                <i class="fa-solid fa-trash"></i>
+                            </a>
+                        </td>
                     </tr>
         {% endfor %}
                 </tbody>
