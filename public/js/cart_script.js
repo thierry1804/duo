@@ -44,5 +44,25 @@ $(function () {
                 }
             });
         });
+
+        $('table .form-control').on('change', function(e) {
+            let bloc = $(e.target.closest('tr'));
+            let path = bloc.find('.path').val();
+            let quantity = bloc.find('.qty').val();
+            let details = bloc.find('.details').val();
+
+            $.ajax({
+                url: path,
+                type: 'PATCH',
+                data: {
+                    quantity: quantity,
+                    details: details
+                },
+                success: function(response) {
+                    const toaster = new ToasterUi();
+                    toaster.addToast('Un item du panier a été modifié', 'info');
+                }
+            });
+        });
     });
 });

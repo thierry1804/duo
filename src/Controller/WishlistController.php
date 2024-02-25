@@ -12,6 +12,7 @@ use App\Repository\WishlistLineRepository;
 use App\Repository\WishlistRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -93,11 +94,25 @@ class WishlistController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/remove', name: 'app_wishlist_remove', methods: ['GET','DELETE'])]
+    #[Route('/{id}/remove', name: 'app_wishlist_remove', methods: ['DELETE'])]
     public function removeItem(WishlistLine $wishlistLine, EntityManagerInterface $entityManager): Response
     {
         $entityManager->remove($wishlistLine);
         $entityManager->flush();
         return $this->redirectToRoute('app_wishlist_index');
+    }
+
+    #[Route('/{id}/update', name: 'app_wishlist_update', methods: ['PATCH'])]
+    public function updateItem(WishlistLine $wishlistLine, EntityManagerInterface $entityManager, Request $request): Response
+    {
+        $qty = $request->request->get('quantity');
+        $details = $request->request->get('details');
+
+        $wishlistLine->setQuantity($qty);
+        $wishlistLine->setDetails($details);
+        $entityManager->persist($wishlistLine);
+        $entityManager->flush();
+
+        return new Response('Item updated');
     }
 }

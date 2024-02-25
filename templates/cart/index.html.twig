@@ -78,16 +78,17 @@
         {% for item in wishlist.wishlistLines %}
                     <tr>
                         <td class="align-middle">
+                            <input type="hidden" class="path" value="{{ path('app_wishlist_update', {id: item.id}) }}">
                             <div style="background-image: url('{{ asset('uploads/' ~ item.article.image) }}'); width: 100px;
                                     height: 100px; background-position: center; background-size: cover;">
                             </div>
                         </td>
                         <td class="align-middle">
                             DUO#{{ item.article.id }}
-                            <input type="number" class="form-control text-center" value="{{ item.quantity }}">
+                            <input type="number" class="form-control text-center qty" value="{{ item.quantity }}">
                         </td>
                         <td class="align-middle">
-                            <textarea class="form-control" rows="4"></textarea>
+                            <textarea class="form-control details" rows="4" placeholder="Entrez des détails si besoins">{{ item.details }}</textarea>
                         </td>
                         <td class="align-middle text-center">
                             <a href="{{ path('app_wishlist_remove', {id: item.id}) }}" class="remove-item text-danger" data-id="{{ item.article.id }}">
