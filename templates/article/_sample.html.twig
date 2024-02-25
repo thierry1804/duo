@@ -2,52 +2,50 @@
     {% set idCategory = 0 %}
     {% for article in articles %}
         {% set idCategory = article.category.id %}
-    <div class="col-4 mb-2 d-sm-none position-relative overflow-hidden h-50">
-        <a href="{{ path('app_article_show', {'id': article.id}) }}" class="stretched-link position-absolute w-100 h-100">&nbsp;</a>
-        <div class="card bg-dark text-white">
-            <div class="card-img-top embed-responsive embed-responsive-1by1" style="object-fit: cover; width: 100%;height: 20vw;">
-                <img src="{{ asset('uploads/' ~ article.image) }}" class="card-img-top embed-responsive-item" alt="...">
+    <!-- Single Advisor-->
+    <div class="col-6 col-sm-4 col-lg-3">
+        <div class="single_advisor_profile wow fadeInUp" data-wow-delay="0.2s">
+            <!-- Team Thumb-->
+            <div class="advisor_thumb" style="background-image: url('{{ asset('uploads/' ~ article.image) }}')">
+                <!-- Social Info-->
+                <div class="social-info"></div>
             </div>
-            <div class="card-img-overlay position-relative">
-                <p class="card-title mb-1 position-absolute end-0 bottom-0 px-1 bg-dark small" style="font-size: xx-small">DUO#{{ article.id }}</p>
+            <!-- Team Details-->
+            <div class="single_advisor_details_info d-flex justify-content-end">
+                <div class="p-4 pb-0">
+                    <h6>DUO#{{ article.id }}</h6>
+                </div>
             </div>
-        </div>
-    </div>
-    <div class="col-12 col-sm-4 col-md-3 col-lg-2 mb-2 d-none d-sm-block position-relative">
-        <a href="{{ path('app_article_show', {'id': article.id}) }}" class="stretched-link position-absolute w-100 h-100">&nbsp;</a>
-        <div class="card">
-            <div>
-                <img src="{{ asset('uploads/' ~ article.image) }}" class="w-100" alt="...">
-            </div>
-            <div class="card-body p-1">
-                <p class="card-title mb-1">DUO#{{ article.id }}</p>
+            <div class="bactions d-flex justify-content-between" style="margin-top: -11px; z-index: 0;">
+                <div class="p-4 position-relative">
+                    <a href="{{ path('app_article_show', {'id': article.id}) }}" class="text-decoration-none stretched-link">
+                        <i class="fa fa-eye"></i>
+                    </a>
+                </div>
+                <div class="p-4 position-relative"><a href="#" class="text-decoration-none stretched-link"><i class="fa-solid fa-cart-plus"></i></a></div>
             </div>
         </div>
     </div>
     {% endfor %}
-    <div class="col-4 mb-2 d-sm-none position-relative overflow-hidden h-50 d-flex align-items-center">
-        <a href="{{ path('app_category_articles', {'id': idCategory}) }}" class="w-100 h-100 text-decoration-none">
-            Afficher tout
-        </a>
-        <div class="card border-0 text-white">
-            <div class="card-img-top embed-responsive embed-responsive-1by1" style="object-fit: cover; width: 100%;height: 20vw;">
-
+    <div class="col-6 col-sm-4 col-lg-3 stretched-link">
+        <div class="single_advisor_profile wow fadeInUp" data-wow-delay="0.2s">
+            <!-- Team Thumb-->
+            <div class="advisor_thumb" style="background-image: url('https://placehold.co/600x600/FFF/A5F?text=Voir%20plus');">
+                <!-- Social Info-->
+                <div class="social-info"></div>
             </div>
-            <div class="card-img-overlay position-relative">
-
+            <!-- Team Details-->
+            <div class="single_advisor_details_info d-flex justify-content-end">
+                <div class="p-4 pb-0">
+                    <h6>&nbsp;</h6>
+                </div>
             </div>
-        </div>
-    </div>
-    <div class="col-12 col-sm-4 col-md-3 col-lg-2 mb-2 d-none d-sm-block d-flex align-items-center position-relative">
-        <a href="{{ path('app_category_articles', {'id': idCategory}) }}" class="w-100 h-100 text-decoration-none">
-            Afficher tout
-        </a>
-        <div class="card border-0">
-            <div>
-
-            </div>
-            <div class="card-body p-1">
-
+            <div class="bactions d-flex justify-content-between" style="margin-top: -11px; z-index: 0;">
+                <div class="p-4">
+                    <a href="{{ path('app_category_articles', {'id': idCategory}) }}" class="text-decoration-none stretched-link">
+                        <i class="fa fa-eye"></i>
+                    </a>
+                </div>
             </div>
         </div>
     </div>

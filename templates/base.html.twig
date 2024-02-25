@@ -23,6 +23,7 @@
     </head>
     <body>
         <div class="container-fluid">
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
             <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
                 <div class="container-fluid">
                     <a class="navbar-brand" href="{{ path('app_duo') }}">
@@ -48,11 +49,28 @@
                                 <input class="form-control" type="search" placeholder="Rechercher" aria-label="Search">
                                 <button class="btn btn-outline-success" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                             </div>
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-2">
+                                <li class="nav-item position-relative">
+                                    <a class="nav-link" href="">
+                                        <i class="fa-solid fa-cart-shopping"></i>
+                                        <span class="badge bg-dark rounded-pill position-absolute end-0 top-0" style="font-size: xx-small;">0</span>
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="btn-group ms-2">
+                                <button class="btn btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa-solid fa-circle-user"></i>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" href="{{ path('app_logout') }}"><i class="fa-solid fa-arrow-right-from-bracket"></i> Déconnecter</a></li>
+                                </ul>
+                            </div>
                         </form>
                     </div>
                 </div>
             </nav>
-            <div class="row mt-5 pt-3">
+            {% endif %}
+            <div class="row mt-5 pt-4">
             {% block body %}{% endblock %}
             </div>
         </div>
@@ -71,6 +89,12 @@
                             e.preventDefault();
                         });
                     });
+                    let isUser = {{ is_granted('ROLE_USER') ? (is_granted('ROLE_ADMIN') ? 0 : 1) : 0 }};
+                    if (isUser) {
+                        setTimeout(function() {
+                            window.location.href = "{{ path('app_logout') }}";
+                        }, 1800000);
+                    }
                 });
             </script>
         {% endblock %}
