@@ -6,6 +6,7 @@ use App\Entity\Article;
 use App\Entity\User;
 use App\Entity\Wishlist;
 use App\Entity\WishlistLine;
+use App\Repository\CategoryRepository;
 use App\Repository\UserRepository;
 use App\Repository\WishlistLineRepository;
 use App\Repository\WishlistRepository;
@@ -18,9 +19,21 @@ use Symfony\Component\Routing\Attribute\Route;
 class WishlistController extends AbstractController
 {
     #[Route('/', name: 'app_wishlist_index')]
-    public function index(): void
+    public function index(UserRepository $userRepository, WishlistRepository $wishlistRepository,
+                          CategoryRepository $categoryRepository): Response
     {
-        // ...
+        //Get the current user
+        $user = $userRepository->find($this->getUser()->getId());
+
+        //Check if this user already has a wishlist
+        $wishlist = $wishlistRepository->findOneBy(['customer' => $user, 'checkedOutAt' => null, 'deletedAt' => null]);
+
+        $categories = $categoryRepository->getCategories();
+
+        return $this->render('cart/index.html.twig', [
+            'wishlist' => $wishlist,
+            'categories' => $categories,
+        ]);
     }
 
     #[Route('/add/{id}', name: 'app_wishlist_add')]
