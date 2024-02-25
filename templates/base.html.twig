@@ -23,7 +23,7 @@
     </head>
     <body>
         <div class="container-fluid">
-            {% if is_granted('IS_AUTHENTICATED_ANONYMOUSLY') %}
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
             <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
                 <div class="container-fluid">
                     <a class="navbar-brand" href="{{ path('app_duo') }}">
