@@ -78,12 +78,15 @@
                     <td class="text-center align-middle">{{ article.disponible ? '<i class="fa-solid fa-circle-check"></i>' : '<i class="fa-regular fa-circle"></i>' }}</td>
                     <td class="text-center align-middle">
                         {% if is_granted('ROLE_ADMIN') %}
-                            <a href="{{ path('app_article_edit', {'id': article.id}) }}">
+                            <a href="{{ path('app_article_edit', {'id': article.id}) }}" class="text-decoration-none">
                                 <i class="fa-solid fa-pen"></i>
                             </a>
                         {% else %}
-                            <a href="{{ path('app_article_show', {'id': article.id}) }}">
+                            <a href="{{ path('app_article_show', {'id': article.id}) }}" class="text-decoration-none">
                                 <i class="fa-solid fa-eye"></i>
+                            </a>
+                            <a href="javascript:void(0)" data-path="{{ path('app_wishlist_add', {id: article.id}) }}" class="text-decoration-none stretched-link addToCart">
+                                <i class="fa-solid fa-cart-plus"></i>
                             </a>
                         {% endif %}
                     </td>

@@ -9,6 +9,8 @@ $(function () {
                 url: path,
                 type: 'POST',
                 success: function(response) {
+                    const toaster = new ToasterUi();
+                    toaster.addToast('Article ajouté au panier', 'success');
                     $('#wishlist').html(response);
                     cible.closest('div').removeClass('rotating');
                 }
@@ -33,7 +35,10 @@ $(function () {
                         url: path,
                         type: 'DELETE',
                         success: function(response) {
-                            window.location.reload();
+                            const toaster = new ToasterUi();
+                            toaster.addToast('Article supprimé du panier', 'warning', {onClose: () => {
+                                window.location.reload();
+                                }});
                         }
                     });
                 }
