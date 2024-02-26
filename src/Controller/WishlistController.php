@@ -117,4 +117,20 @@ class WishlistController extends AbstractController
 
         return new Response('Item updated');
     }
+
+    #[Route('/ask-for-quote', name: 'app_wishlist_ask_for_quote')]
+    public function askForQuote(Request $request, WishlistRepository $wishlistRepository,
+                                EntityManagerInterface $entityManager): Response
+    {
+        $data = $request->request->all();
+        $idCart = $data['cart']['id'];
+
+        $cart = $wishlistRepository->find($idCart);
+        $cart->setCheckedOutAt(new DateTimeImmutable());
+
+        $entityManager->persist($cart);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_wishlist_index');
+    }
 }

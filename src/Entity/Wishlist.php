@@ -34,6 +34,12 @@ class Wishlist
     #[ORM\OneToMany(targetEntity: WishlistLine::class, mappedBy: 'wishlist', orphanRemoval: true)]
     private Collection $wishlistLines;
 
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $quotedAt = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $quotePrintedAt = null;
+
     public function __construct()
     {
         $this->wishlistLines = new ArrayCollection();
@@ -131,6 +137,30 @@ class Wishlist
                 $wishlistLine->setWishlist(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getQuotedAt(): ?\DateTimeImmutable
+    {
+        return $this->quotedAt;
+    }
+
+    public function setQuotedAt(?\DateTimeImmutable $quotedAt): static
+    {
+        $this->quotedAt = $quotedAt;
+
+        return $this;
+    }
+
+    public function getQuotePrintedAt(): ?\DateTimeImmutable
+    {
+        return $this->quotePrintedAt;
+    }
+
+    public function setQuotePrintedAt(?\DateTimeImmutable $quotePrintedAt): static
+    {
+        $this->quotePrintedAt = $quotePrintedAt;
 
         return $this;
     }

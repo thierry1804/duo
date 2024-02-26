@@ -64,7 +64,9 @@
     </div>
     <div class="col">
         <h4>Votre panier</h4>
-        <form method="post">
+        {% if wishlist is not empty %}
+        <form method="post" action="{{ path('app_wishlist_ask_for_quote') }}">
+            <input type="hidden" value="{{ wishlist.id }}" name="cart[id]">
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -79,16 +81,17 @@
                     <tr>
                         <td class="align-middle">
                             <input type="hidden" class="path" value="{{ path('app_wishlist_update', {id: item.id}) }}">
+                            <input type="hidden" value="{{ item.id }}" name="line[{{ item.id }}][id]">
                             <div style="background-image: url('{{ asset('uploads/' ~ item.article.image) }}'); width: 100px;
                                     height: 100px; background-position: center; background-size: cover;">
                             </div>
                         </td>
                         <td class="align-middle">
                             DUO#{{ item.article.id }}
-                            <input type="number" class="form-control text-center qty" value="{{ item.quantity }}">
+                            <input type="number" class="form-control text-center qty" value="{{ item.quantity }}" name="line[{{ item.id }}][qty]">
                         </td>
                         <td class="align-middle">
-                            <textarea class="form-control details" rows="4" placeholder="Entrez des détails si besoins">{{ item.details }}</textarea>
+                            <textarea class="form-control details" rows="4" placeholder="Entrez des détails si besoins" name="line[{{ item.id }}][detail]">{{ item.details }}</textarea>
                         </td>
                         <td class="align-middle text-center">
                             <a href="{{ path('app_wishlist_remove', {id: item.id}) }}" class="remove-item text-danger" data-id="{{ item.article.id }}">
@@ -104,6 +107,11 @@
                     </tr>
                 </tfoot>
             </table>
+            <button type="submit" name="send" class="btn btn-primary mb-2">Demander un devis</button>
         </form>
+        {% else %}
+        <p>Il est vide actuellement mais vous pouvez parcourir la liste des produits et remplir votre panier au gré de vos envies.</p>
+        <p>Pour ce faire, vous pouvez retourner à l'<a href="{{ path('app_duo') }}" class="text-decoration-none">accueil</a> ou parcourir nos catégories.</p>
+        {% endif %}
     </div>
 {% endblock %}
