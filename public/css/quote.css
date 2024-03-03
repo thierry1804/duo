@@ -1,0 +1,16 @@
+#quote_expedition, #quote_transitaire {
+    height: auto;
+}
+form label {
+    font-weight: bold;
+}
+div ul {
+    list-style-type: none;
+    padding: 0;
+}
+div ul li {
+    display: block;
+    color: #e8071d;
+    font-size: 0.8em;
+    font-style: italic;
+}

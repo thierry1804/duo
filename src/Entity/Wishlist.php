@@ -40,6 +40,15 @@ class Wishlist
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $quotePrintedAt = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $expeditionMode = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $transitType = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $transit = null;
+
     public function __construct()
     {
         $this->wishlistLines = new ArrayCollection();
@@ -161,6 +170,42 @@ class Wishlist
     public function setQuotePrintedAt(?\DateTimeImmutable $quotePrintedAt): static
     {
         $this->quotePrintedAt = $quotePrintedAt;
+
+        return $this;
+    }
+
+    public function getExpeditionMode(): ?string
+    {
+        return $this->expeditionMode;
+    }
+
+    public function setExpeditionMode(?string $expeditionMode): static
+    {
+        $this->expeditionMode = $expeditionMode;
+
+        return $this;
+    }
+
+    public function getTransitType(): ?string
+    {
+        return $this->transitType;
+    }
+
+    public function setTransitType(?string $transitType): static
+    {
+        $this->transitType = $transitType;
+
+        return $this;
+    }
+
+    public function getTransit(): ?string
+    {
+        return $this->transit;
+    }
+
+    public function setTransit(?string $transit): static
+    {
+        $this->transit = $transit;
 
         return $this;
     }

@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Article;
-use App\Entity\User;
 use App\Entity\Wishlist;
 use App\Entity\WishlistLine;
 use App\Repository\CategoryRepository;
@@ -119,18 +118,11 @@ class WishlistController extends AbstractController
     }
 
     #[Route('/ask-for-quote', name: 'app_wishlist_ask_for_quote')]
-    public function askForQuote(Request $request, WishlistRepository $wishlistRepository,
-                                EntityManagerInterface $entityManager): Response
+    public function askForQuote(Request $request): Response
     {
         $data = $request->request->all();
         $idCart = $data['cart']['id'];
 
-        $cart = $wishlistRepository->find($idCart);
-        $cart->setCheckedOutAt(new DateTimeImmutable());
-
-        $entityManager->persist($cart);
-        $entityManager->flush();
-
-        return $this->redirectToRoute('app_wishlist_index');
+        return $this->redirectToRoute('app_quote', ['id' => $idCart]);
     }
 }
