@@ -83,28 +83,34 @@ class ArticleRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-//    /**
-//     * @return Article[] Returns an array of Article objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('a.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @throws Exception
+     */
+    public function findByArticle(?string $q): array
+    {
+        if ($q === null) {
+            return [];
+        }
 
-//    public function findOneBySomeField($value): ?Article
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        $sql = "
+            select a.*
+            from article a
+            where a.id like '%$q%'
+            or a.label like '%$q%'
+            or a.couleur like '%$q%'
+            or a.taille like '%$q%'
+            or a.pointure like '%$q%'
+            or a.keywords like '%$q%'
+            order by a.created_at desc
+        ";
+
+        $entityManager = $this->getEntityManager();
+
+        $cnx = $entityManager->getConnection();
+
+        $results = $cnx->executeQuery($sql);
+
+        return $results->fetchAllAssociative();
+    }
+
 }

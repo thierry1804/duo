@@ -30,10 +30,10 @@ class CategoryRepository extends ServiceEntityRepository
         $sql = "
             select c.id, c.label, count(a.id) as nb
             from article a
-            inner join category c on c.id = a.category_id 
+            inner join category c on c.id = a.category_id
             group by c.id
             having count(a.id) > 0
-            order by c.label asc 
+            order by c.label asc
         ";
 
         $entityManager = $this->getEntityManager();
@@ -45,28 +45,33 @@ class CategoryRepository extends ServiceEntityRepository
         return $results->fetchAllAssociative();
     }
 
-//    /**
-//     * @return Category[] Returns an array of Category objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('c.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @param string|null $q
+     * @return array
+     * @throws Exception
+     */
+    public function findByCategory(?string $q): array
+    {
+        if ($q === null) {
+            return [];
+        }
 
-//    public function findOneBySomeField($value): ?Category
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        $sql = "
+            select c.id, c.label, count(a.id) as nb
+            from article a
+            inner join category c on c.id = a.category_id
+            where c.label like '%$q%' or c.description like '%$q%'
+            group by c.id
+            having count(a.id) > 0
+            order by c.label asc
+        ";
+
+        $entityManager = $this->getEntityManager();
+
+        $cnx = $entityManager->getConnection();
+
+        $results = $cnx->executeQuery($sql);
+
+        return $results->fetchAllAssociative();
+    }
 }
