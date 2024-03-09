@@ -1,33 +1,132 @@
-{% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+    <style>
+        @media only screen and (max-width: 575px) {
+            * {
+                font-size: 1em;
+            }
+        }
+        @media print {
+            html, body {
+                display: none;  /* hide whole page */
+            }
+        }
 
-{% block body %}
-    <div class="row vh-100 d-flex justify-content-center">
+        #inputOtp, #inputOtp:focus {
+            font-size: 2em;
+            letter-spacing: 0.5em;
+            text-align: center;
+        }
+    </style>
+    {% block stylesheets %}
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    {% endblock %}
+</head>
+<body>
+<div class="container-fluid position-relative vh-100 overflow-hidden">
+    <div class="position-absolute top-50 start-50 translate-middle col-12 col-md-6">
         <form method="post" class="w-sm-50 align-self-center p-4 border">
+            <h1 class="h3 mb-3 font-weight-normal mt-3">
+                <a class="navbar-brand" href="{{ path('app_duo') }}">
+                    <img src="{{ asset('logo.jpg') }}" alt="" height="40" />
+                </a>
+                Connetez-vous
+            </h1>
             {% if error %}
                 <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
             {% endif %}
 
             {% if app.user %}
                 <div class="mb-3">
-                    You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+                    Vous êtes déjà connecté(e) en tant que {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
                 </div>
             {% endif %}
 
-            <h1 class="h3 mb-3 font-weight-normal mt-3">Please sign in</h1>
-            <label for="inputEmail" class="form-label">Email</label>
-            <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control mb-2" autocomplete="email" required autofocus>
-            <label for="inputPassword" class="form-label">Password</label>
-            <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+            <div id="primaryConnexion">
+                <label for="inputEmail" class="form-label">Email</label>
+                <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control mb-2" autocomplete="email" required autofocus>
+                <label for="inputPassword" class="form-label">Mot de passe</label>
+                <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+
+                <button class="btn btn-sm btn-primary mt-3" type="submit">
+                    Connexion
+                </button>
+                <br>
+                <a href="" class="text-decoration-none" id="showSecondary">J'ai un code OTP</a>
+            </div>
+
+            <div id="secondaryConnexion" class="d-none">
+                <label for="inputOTP" class="form-label">Code OTP</label>
+                <input type="text" name="otp" id="inputOtp" class="form-control"
+                       autocomplete="one-time-code" inputmode="numeric" maxlength="6" pattern="\d{6}">
+
+                <button class="btn btn-sm btn-primary mt-3" type="submit">
+                    Connexion
+                </button>
+                <br>
+                <a href="" class="text-decoration-none" id="showPrimary">J'ai un login et un mot de passe</a>
+            </div>
 
             <input type="hidden" name="_csrf_token"
                    value="{{ csrf_token('authenticate') }}"
             >
-
-            <button class="btn btn-lg btn-primary mt-3" type="submit">
-                Sign in
-            </button>
         </form>
     </div>
+</div>
+
+{% block javascripts %}
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/acce7aa7a0.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/toaster-ui@1.1.5/dist/main.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $(document).ready(function() {
+                //Ne pas permettre le clic droit
+                document.addEventListener('contextmenu', event => event.preventDefault());
+
+                //Ne pas permettre le copier coller
+                $('*').bind('copy', function(e) {
+                    e.preventDefault();
+                });
+
+                $('#showPrimary').click(function (e) {
+                    e.preventDefault();
+                    $('#primaryConnexion').removeClass('d-none');
+                    $('#secondaryConnexion').addClass('d-none');
+
+                    $('input[name="otp"]').val('');
+
+                    $('input[name="email"]').prop('required', true);
+                    $('input[name="password"]').prop('required', true);
+                    $('input[name="otp"]').prop('required', false);
+
+                    $('input[name="email"]').focus();
+                });
+                $('#showSecondary').click(function (e) {
+                    e.preventDefault();
+                    $('#primaryConnexion').addClass('d-none');
+                    $('#secondaryConnexion').removeClass('d-none');
+
+                    $('input[name="email"]').val('');
+                    $('input[name="password"]').val('');
+
+                    $('input[name="email"]').prop('required', false);
+                    $('input[name="password"]').prop('required', false);
+                    $('input[name="otp"]').prop('required', true);
+
+                    $('input[name="otp"]').focus();
+                });
+            });
+        });
+    </script>
 {% endblock %}
+</body>
+</html>

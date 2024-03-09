@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des utilisateurs{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    <div class="col">
+        <a href="{{ path('app_admin_generate_otp', {'id': 0}) }}" class="btn btn-sm btn-primary">
+            <i class="fa-solid fa-gears"></i>
+            Générer un nouveau code OTP
+        </a>
+        <table class="table table-sm table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Email</th>
+                    <th>Téléphone</th>
+                    <th>Adresse</th>
+                    <th>Nb <i class="fa-solid fa-cart-shopping"></i></th>
+                    <th>OTP</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.nom }}</td>
+                        <td>{{ user.prenom }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.telephone }}</td>
+                        <td>{{ user.adresse }}</td>
+                        <td>
+                            {{ user.wishlists|length }}
+                        </td>
+                        <td><code>{{ user.code }}</code></td>
+                        <td>
+                            <a href="{{ path('app_admin_generate_otp', {'id': user.id}) }}" class="btn btn-sm btn-primary">
+                                <i class="fa-solid fa-gears"></i>
+                                OTP
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

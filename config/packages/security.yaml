@@ -14,6 +14,11 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
+            login_link:
+                check_route: login_check
+                signature_properties: ['code']
+                lifetime: 60
+                max_uses: 1
             lazy: true
             provider: app_user_provider
             custom_authenticator: App\Security\UserAuthenticator
@@ -37,7 +42,8 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/admin, roles: PUBLIC_ACCESS }
+        - { path: ^/request-login-link, roles: PUBLIC_ACCESS }
         - { path: ^/login, roles: PUBLIC_ACCESS }
         - { path: ^/logout, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/check_login, roles: PUBLIC_ACCESS }
