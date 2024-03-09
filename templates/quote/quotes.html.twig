@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Les devis{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    <h1>Les devis</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Numéro</th>
+                <th>Date de la demande</th>
+                <th>Client</th>
+                <th>Nb lignes</th>
+                <th>Mode d'expédition</th>
+                <th>Transitaire</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for quote in quotes %}
+                <tr>
+                    <td class="text-nowrap"><code>{{ quote.checkedOutAt|date('Ymd') }}-{{ quote.id }}</code></td>
+                    <td>{{ quote.checkedOutAt|date('d/m/Y H:i:s') }}</td>
+                    <td>
+                        {{ quote.customer.nom }} {{ quote.customer.prenom }}<br>
+                        {{ quote.customer.email }}<br>
+                        {{ quote.customer.telephone }}<br>
+                        {{ quote.customer.adresse }}
+                    </td>
+                    <td>{{ quote.wishlistLines|length }}</td>
+                    <td>{{ quote.expeditionMode }}</td>
+                    <td>{{ quote.transitType }}{{ quote.transit }}</td>
+                    <td>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

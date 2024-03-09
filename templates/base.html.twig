@@ -42,13 +42,28 @@
                             </li>
                             {% if is_granted('ROLE_ADMIN') %}
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ path('app_admin_users_management') }}">Les utilisateurs</a>
+                                <a class="nav-link" href="{{ path('app_admin_users_management') }}">
+                                    <i class="fa-solid fa-users-gear"></i>
+                                    Les utilisateurs
+                                </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ path('app_category_index') }}">Les catégories</a>
+                                <a class="nav-link" href="{{ path('app_category_index') }}">
+                                    <i class="fa-solid fa-layer-group"></i>
+                                    Les catégories
+                                </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ path('app_article_index') }}">Les articles</a>
+                                <a class="nav-link" href="{{ path('app_article_index') }}">
+                                    <i class="fa-solid fa-store"></i>
+                                    Les articles
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('app_quotes') }}">
+                                    <i class="fa-solid fa-receipt"></i>
+                                    Les devis
+                                </a>
                             </li>
                             {% endif %}
                         </ul>

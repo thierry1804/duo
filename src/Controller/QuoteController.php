@@ -5,13 +5,14 @@ namespace App\Controller;
 use App\Entity\Wishlist;
 use App\Form\QuoteType;
 use App\Repository\UserRepository;
+use App\Repository\WishlistRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use SmtpValidatorEmail\ValidatorEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/quote')]
 class QuoteController extends AbstractController
@@ -30,13 +31,18 @@ class QuoteController extends AbstractController
                 $form->get('email')->addError(new FormError('L\'adresse email semble ne pas exister.'));
             }
             elseif (!preg_match('/^(\+\d{2,3}|0)\d{9}$/', $form->get('phone')->getData())) {
-                $form->get('phone')->addError(new FormError('Veuillez vérifier le numéro de téléphone: il semble incorrect.'));
+                $form->get('phone')
+                    ->addError(new FormError('Veuillez vérifier le numéro de téléphone: il semble incorrect.'));
             }
-            elseif ($form->get('transitaire')->getData() === 'other_transitaire' && $form->get('other_transitaire')->getData() === null) {
+            elseif ($form->get('transitaire')->getData() === 'other_transitaire'
+                && $form->get('other_transitaire')->getData() === null) {
                 $form->get('other_transitaire')->addError(new FormError('Veuillez saisir le nom de votre transitaire'));
             }
-            elseif ($form->get('transitaire')->getData() === 'duo_transitaire' && $form->get('other_transitaire')->getData() !== null) {
-                $form->get('other_transitaire')->addError(new FormError('Nous vous prions de ne pas saisir le nom d\'un transitaire si vous avez choisi le transitaire partenaire de DUO.'));
+            elseif ($form->get('transitaire')->getData() === 'duo_transitaire'
+                && $form->get('other_transitaire')->getData() !== null) {
+                $form->get('other_transitaire')
+                    ->addError(new FormError('Nous vous prions de ne pas saisir le nom d\'un transitaire si
+                    vous avez choisi le transitaire partenaire de DUO.'));
             }
             else {
                 //update current user
@@ -58,7 +64,8 @@ class QuoteController extends AbstractController
                 $entityManager->persist($wishlist);
                 $entityManager->flush();
 
-                $this->addFlash('success', 'Votre demande de devis a bien été enregistrée. Nous vous contacterons dans les plus brefs délais.');
+                $this->addFlash('success', 'Votre demande de devis a bien été enregistrée.
+                Nous vous contacterons dans les plus brefs délais.');
 
                 return $this->redirectToRoute('app_wishlist_index');
             }
@@ -67,6 +74,16 @@ class QuoteController extends AbstractController
         return $this->render('quote/index.html.twig', [
             'wishlist' => $wishlist,
             'form' => $form->createView(),
+        ]);
+    }
+
+    #[IsGranted('ROLE_ADMIN')]
+    #[Route('/list', name: 'app_quotes')]
+    public function getQuotes(WishlistRepository $wishlistRepository): Response
+    {
+        $quotes = $wishlistRepository->findQuotes();
+        return $this->render('quote/quotes.html.twig', [
+            'quotes' => $quotes,
         ]);
     }
 }
