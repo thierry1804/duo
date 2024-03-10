@@ -123,9 +123,14 @@
                 </tr>
                 <tr>
                     <th colspan="4" class="text-end">TOTAL</th>
-                    <th><input type="number" min="1" step="any" class="form-control form-control-sm total text-end fw-bold" value="0.00" /></th>
+                    <th><input type="number" min="1" step="any" class="form-control-plaintext form-control-sm total text-end fw-bold pe-2" value="0.00" /></th>
                 </tr>
             </tfoot>
         </table>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/quote_script.js') }}"></script>
 {% endblock %}

@@ -115,7 +115,7 @@
             <script src="{{ asset('js/cart_script.js') }}"></script>
             <script type="text/javascript">
                 $(function () {
-                    let isUserLoggedIn = {{ app.user ? 1 : 0 }};
+                    let isUserLoggedIn = {{ is_granted('IS_AUTHENTICATED_FULLY') ? 1 : 0 }};
                     if (!isUserLoggedIn) {
                         window.location.href = "{{ path('app_logout') }}";
                     }
