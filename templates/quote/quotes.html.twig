@@ -7,37 +7,64 @@
 {% endblock %}
 
 {% block body %}
-    <h1>Les devis</h1>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Numéro</th>
-                <th>Date de la demande</th>
-                <th>Client</th>
-                <th>Nb lignes</th>
-                <th>Mode d'expédition</th>
-                <th>Transitaire</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for quote in quotes %}
+    <div class="col">
+        <h1>Les devis</h1>
+        <table class="table table-sm">
+            <thead>
                 <tr>
-                    <td class="text-nowrap"><code>{{ quote.checkedOutAt|date('Ymd') }}-{{ quote.id }}</code></td>
-                    <td>{{ quote.checkedOutAt|date('d/m/Y H:i:s') }}</td>
-                    <td>
-                        {{ quote.customer.nom }} {{ quote.customer.prenom }}<br>
-                        {{ quote.customer.email }}<br>
-                        {{ quote.customer.telephone }}<br>
-                        {{ quote.customer.adresse }}
-                    </td>
-                    <td>{{ quote.wishlistLines|length }}</td>
-                    <td>{{ quote.expeditionMode }}</td>
-                    <td>{{ quote.transitType }}{{ quote.transit }}</td>
-                    <td>
-                    </td>
+                    <th>Numéro</th>
+                    <th>Date de la demande</th>
+                    <th>Client</th>
+                    <th>Nb lignes</th>
+                    <th>Mode d'expédition</th>
+                    <th>Transitaire</th>
+                    <th>Finalisé le</th>
+                    <th>Imprimé le</th>
+                    <th>Actions</th>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                {% for quote in quotes %}
+                    <tr>
+                        <td class="text-nowrap"><code>{{ quote.checkedOutAt|date('Ymd') }}-{{ quote.id }}</code></td>
+                        <td>{{ quote.checkedOutAt|date('d/m/Y H:i:s') }}</td>
+                        <td>
+                            {{ quote.customer.nom }} {{ quote.customer.prenom }}<br>
+                            {{ quote.customer.email }}<br>
+                            {{ quote.customer.telephone }}<br>
+                            {{ quote.customer.adresse }}
+                        </td>
+                        <td>{{ quote.wishlistLines|length }}</td>
+                        <td>
+                            {% if quote.expeditionMode == 'aerien_normal' %}
+                                <i class="fa-regular fa-paper-plane"></i> Aérien - Normal
+                            {% elseif quote.expeditionMode == 'aerien_express' %}
+                                <i class="fa-solid fa-paper-plane"></i> Aérien - Express
+                            {% elseif quote.expeditionMode == 'maritime_normal' %}
+                                <i class="fa-solid fa-ship"></i> Maritime
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if quote.transitType == 'duo_transitaire' %}
+                                <i class="fa-solid fa-clipboard-user"></i> Transitaire partenaire DUO
+                            {% else %}
+                                <i class="fa-regular fa-id-badge"></i> Votre propre transitaire: {{ quote.transit }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {{ (quote.quotedAt) ? quote.quotedAd|date('d/m/Y H:i:s') : 'Non finalisé' }}
+                        </td>
+                        <td>
+                            {{ (quote.quotePrintedAt) ? quote.quotePrintedAt|date('d/m/Y H:i:s') : 'Non imprimé' }}
+                        </td>
+                        <td>
+                            <a class="btn btn-sm btn-primary" href="{{ path('app_quote_view', {'id': quote.id}) }}">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

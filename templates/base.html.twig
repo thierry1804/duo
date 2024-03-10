@@ -115,6 +115,10 @@
             <script src="{{ asset('js/cart_script.js') }}"></script>
             <script type="text/javascript">
                 $(function () {
+                    let isUserLoggedIn = {{ app.user ? 1 : 0 }};
+                    if (!isUserLoggedIn) {
+                        window.location.href = "{{ path('app_logout') }}";
+                    }
                     $(document).ready(function() {
                         //Ne pas permettre le clic droit
                         document.addEventListener('contextmenu', event => event.preventDefault());

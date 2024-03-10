@@ -86,4 +86,17 @@ class QuoteController extends AbstractController
             'quotes' => $quotes,
         ]);
     }
+
+    #[IsGranted('ROLE_ADMIN')]
+    #[Route('/view/{id}', name: 'app_quote_view', requirements: ['id' => '\d+'])]
+    public function viewQuote(?Wishlist $wishlist): Response
+    {
+        if ($wishlist === null) {
+            return new Response('404 Not Found', 404, ['Content-Type' => 'text/plain']);
+        }
+
+        return $this->render('quote/view.html.twig', [
+            'wishlist' => $wishlist,
+        ]);
+    }
 }
