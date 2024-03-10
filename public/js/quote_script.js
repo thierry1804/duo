@@ -5,6 +5,9 @@ $(function () {
             updateSousTotal();
             updateTotal();
         })
+        .click(function () {
+            $(this).select();
+        })
     ;
 
     let updateMontant = function(cible) {
