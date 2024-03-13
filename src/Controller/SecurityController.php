@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mailer\Transport\TransportInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
@@ -24,7 +25,7 @@ class SecurityController extends AbstractController
      * @throws TransportExceptionInterface
      */
     #[Route(path: '/login', name: 'app_login')]
-    public function login(AuthenticationUtils $authenticationUtils, MailerInterface $mailer): Response
+    public function login(AuthenticationUtils $authenticationUtils, TransportInterface $mailer): Response
     {
         $email = (new Email())
             ->from('contact@duoimportmdg.com')
