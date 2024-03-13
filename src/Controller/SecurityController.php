@@ -30,6 +30,8 @@ class SecurityController extends AbstractController
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         $transport = new EsmtpTransport('smtp.mailersend.net', 587, false);
+        $transport->setUsername('MS_avxfPp@trial-jy7zpl99y8pl5vx6.mlsender.net');
+        $transport->setPassword('mIjhHd6JQnj8tmho');
         $mailer = new Mailer($transport);
         $email = (new Email())
             ->from('contact@duoimportmdg.com')
