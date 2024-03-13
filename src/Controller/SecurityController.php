@@ -18,9 +18,6 @@ use Symfony\Component\Security\Http\LoginLink\LoginLinkHandlerInterface;
 
 class SecurityController extends AbstractController
 {
-    /**
-     * @throws TransportExceptionInterface
-     */
     #[Route(path: '/login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
