@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mailer\Transport\Smtp\EsmtpTransport;
 use Symfony\Component\Mailer\Transport\TransportInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -27,7 +28,8 @@ class SecurityController extends AbstractController
     #[Route(path: '/login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils, TransportInterface $mailer): Response
     {
-        $email = (new Email())
+        $transport = new EsmtpTransport('smtp.mailersend.net', 587, false);
+        $email = $transport
             ->from('contact@duoimportmdg.com')
             ->to('thierry1804@yopmail.com')
             ->subject('Time for Symfony Mailer!')
