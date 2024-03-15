@@ -57,7 +57,6 @@ class ArticleController extends AbstractController
                 );
 
                 $imagine = new Imagine();
-                dd($this->getParameter('images_directory').'/'.$fichier);
                 $image = $imagine->open($this->getParameter('images_directory').'/'.$fichier);
                 $imageSize = $this->getSizeOfAnImage($image);
                 $watermarkPath = $this->getParameter('watermark_directory');
@@ -166,6 +165,7 @@ class ArticleController extends AbstractController
         );
 
         $imagine = new Imagine();
+        dd($this->getParameter('images_directory').'/'.$fichier);
         $image = $imagine->open($this->getParameter('images_directory').'/'.$fichier);
         $imageSize = $this->getSizeOfAnImage($image);
         $watermarkPath = $this->getParameter('watermark_directory');
