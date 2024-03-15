@@ -165,8 +165,9 @@ class ArticleController extends AbstractController
         );
 
         $imagine = new Imagine();
-        dd($this->getParameter('images_directory').'/'.$fichier);
-        $image = $imagine->open($this->getParameter('images_directory').'/'.$fichier);
+        //dd($this->getParameter('images_directory').'/'.$fichier);
+        //$image = $imagine->open($this->getParameter('images_directory').'/'.$fichier);
+        $image = $imagine->open("/home/eshopbyv/public_html/duo/public/uploads/28043af55284ae611972867edc75c827.jpg");
         $imageSize = $this->getSizeOfAnImage($image);
         $watermarkPath = $this->getParameter('watermark_directory');
         $watermark = $imagine->open($watermarkPath);
