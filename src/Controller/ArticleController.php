@@ -168,8 +168,7 @@ class ArticleController extends AbstractController
         $imagine = new Imagine();
         //dd($this->getParameter('images_directory').'/'.$fichier);
         //$image = $imagine->open($this->getParameter('images_directory').'/'.$fichier);
-        $path = __DIR__ . "/../../../../perso/duo/public/uploads/835d8bd31e14ab89990752ffc9e61d0d.jpg";
-
+        $path = "/home/eshopbyv/public_html/duo/public/uploads/28043af55284ae611972867edc75c827.jpg";
         var_dump(file_get_contents($path));
         $image = $imagine->open($path);
         $imageSize = $this->getSizeOfAnImage($image);
