@@ -169,8 +169,7 @@ class ArticleController extends AbstractController
         //dd($this->getParameter('images_directory').'/'.$fichier);
         //$image = $imagine->open($this->getParameter('images_directory').'/'.$fichier);
         $path = "/home/eshopbyv/public_html/duo/public/uploads/28043af55284ae611972867edc75c827.jpg";
-        $loader = $path instanceof LoaderInterface ? $path : $imagine->getClassFactory()->createFileLoader($path);
-        dd($loader);
+        dd(file_get_contents($path));
         $image = $imagine->open($path);
         $imageSize = $this->getSizeOfAnImage($image);
         $watermarkPath = $this->getParameter('watermark_directory');
