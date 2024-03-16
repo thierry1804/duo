@@ -151,11 +151,31 @@ class ArticleController extends AbstractController
         $images = $request->files->get('images');
         $category = $categoryRepository->find($request->request->get('category'));
 
-        $fichier = md5(uniqid()).'.'.$images->guessExtension();
+        $extension = $images->guessExtension();
+        $filename = md5(uniqid());
+        $fichier = $filename.'.'.$extension;
         $images->move(
             $this->getParameter('images_directory'),
             $fichier
         );
+
+        //convert the image to webp
+        $newFichier = $filename . '.webp';
+        switch ($extension) {
+            case 'jpeg':
+            case 'jpg':
+                $image = imagecreatefromjpeg($this->getParameter('images_directory').'/'.$fichier);
+                break;
+            case 'png':
+                $image = imagecreatefrompng($this->getParameter('images_directory').'/'.$fichier);
+                imagepalettetotruecolor($image);
+                imagealphablending($image, true);
+                imagesavealpha($image, true);
+                break;
+            default:
+                return new Response('Invalid image type', Response::HTTP_BAD_REQUEST);
+        }
+        imagewebp($image, $this->getParameter('images_directory').'/'.$newFichier, 100);
 
         $article = new Article();
         $article->setCategory($category);
@@ -170,6 +190,10 @@ class ArticleController extends AbstractController
         );
     }
 
+    /**
+     * @param string $fichier
+     * @return string
+     */
     private function addWatermarkOnImage(string $fichier): string
     {
         try {
