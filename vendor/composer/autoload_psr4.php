@@ -121,4 +121,5 @@ return array(
     'Composer\\Semver\\' => array($vendorDir . '/composer/semver/src'),
     'App\\Tests\\' => array($baseDir . '/tests'),
     'App\\' => array($baseDir . '/src'),
+    'Ajaxray\\PHPWatermark\\' => array($vendorDir . '/ajaxray/php-watermark/src/Ajaxray/PHPWatermark'),
 );

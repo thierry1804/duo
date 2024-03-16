@@ -4,6 +4,7 @@ namespace App\Controller;
 
 ini_set('max_file_uploads', '22');
 
+use Ajaxray\PHPWatermark\Watermark;
 use App\Entity\Article;
 use App\Entity\Category;
 use App\Form\ArticlesType;
@@ -12,6 +13,7 @@ use App\Repository\ArticleRepository;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Imagine\Gd\Imagine;
+use Imagine\Gd;
 use Imagine\Image\Box;
 use Imagine\Image\ImageInterface;
 use Imagine\Image\Point;
@@ -158,24 +160,6 @@ class ArticleController extends AbstractController
             $fichier
         );
 
-        //convert the image to webp
-        $newFichier = $filename . '.webp';
-        switch ($extension) {
-            case 'jpeg':
-            case 'jpg':
-                $image = \imagecreatefromjpeg($this->getParameter('images_directory').'/'.$fichier);
-                break;
-            case 'png':
-                $image = \imagecreatefrompng($this->getParameter('images_directory').'/'.$fichier);
-                \imagepalettetotruecolor($image);
-                \imagealphablending($image, true);
-                \imagesavealpha($image, true);
-                break;
-            default:
-                return new Response('Invalid image type', Response::HTTP_BAD_REQUEST);
-        }
-        \imagewebp($image, $this->getParameter('images_directory').'/'.$newFichier, 100);
-
         $article = new Article();
         $article->setCategory($category);
         $article->setImage($fichier);
@@ -196,15 +180,11 @@ class ArticleController extends AbstractController
     private function addWatermarkOnImage(string $fichier): string
     {
         try {
-            $imagine = new Imagine();
-            $image = $imagine->open($this->getParameter('images_directory').'/'.$fichier);
-            $imageSize = $this->getSizeOfAnImage($image);
-            $watermarkPath = $this->getParameter('watermark_directory');
-            $watermark = $imagine->open($watermarkPath);
-            $watermark->resize(new Box($imageSize->getWidth() / 2, $imageSize->getWidth() / 2));
-            $watermarkPosition = new Point(0, $imageSize->getHeight() - ($imageSize->getWidth() / 2));
-            $image->paste($watermark, $watermarkPosition);
-            $image->save($this->getParameter('images_directory').'/'.$fichier);
+            $watermark = new Watermark($this->getParameter('images_directory').'/'.$fichier);
+            $watermark
+                ->withImage($this->getParameter('watermark_directory'))
+                ->write()
+            ;
             return 'Watermark added successfully';
         } catch (\Exception $e) {
             return $e->getMessage();

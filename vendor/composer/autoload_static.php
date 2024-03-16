@@ -179,6 +179,7 @@ class ComposerStaticInit54c05e64f01f49eb136e9af7b3075bdd
         array (
             'App\\Tests\\' => 10,
             'App\\' => 4,
+            'Ajaxray\\PHPWatermark\\' => 21,
         ),
     );
 
@@ -645,6 +646,10 @@ class ComposerStaticInit54c05e64f01f49eb136e9af7b3075bdd
         'App\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
+        ),
+        'Ajaxray\\PHPWatermark\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/ajaxray/php-watermark/src/Ajaxray/PHPWatermark',
         ),
     );
 
