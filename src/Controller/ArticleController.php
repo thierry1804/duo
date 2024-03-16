@@ -12,8 +12,10 @@ use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Imagine\Gd\Imagine;
 use Imagine\Image\Box;
 use Imagine\Image\ImageInterface;
+use Imagine\Image\Point;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -177,12 +179,15 @@ class ArticleController extends AbstractController
     private function addWatermarkOnImage(string $fichier): string
     {
         try {
-            $watermark = new Watermark($this->getParameter('images_directory').'/'.$fichier);
-            dd($watermark->withImage($this->getParameter('watermark_directory'))->write());
-            $watermark
-                ->withImage($this->getParameter('watermark_directory'))
-                ->write()
-            ;
+            $imagine = new Imagine();
+            $image = $imagine->open($this->getParameter('images_directory').'/'.$fichier);
+            $imageSize = $this->getSizeOfAnImage($image);
+            $watermarkPath = $this->getParameter('watermark_directory');
+            $watermark = $imagine->open($watermarkPath);
+            $watermark->resize(new Box($imageSize->getWidth() / 2, $imageSize->getWidth() / 2));
+            $watermarkPosition = new Point(0, $imageSize->getHeight() - ($imageSize->getWidth() / 2));
+            $image->paste($watermark, $watermarkPosition);
+            $image->save($this->getParameter('images_directory').'/'.$fichier);
             return 'Watermark added successfully';
         } catch (\Exception $e) {
             return $e->getMessage();
