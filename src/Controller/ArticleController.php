@@ -178,7 +178,7 @@ class ArticleController extends AbstractController
     {
         try {
             $watermark = new Watermark($this->getParameter('images_directory').'/'.$fichier);
-            dd($watermark);
+            dd($watermark->withImage($this->getParameter('watermark_directory'))->write());
             $watermark
                 ->withImage($this->getParameter('watermark_directory'))
                 ->write()
