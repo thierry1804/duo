@@ -12,7 +12,6 @@ use App\Repository\ArticleRepository;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Imagine\Gd\Imagine;
-use Imagine\Gd;
 use Imagine\Image\Box;
 use Imagine\Image\ImageInterface;
 use Imagine\Image\Point;
@@ -164,18 +163,18 @@ class ArticleController extends AbstractController
         switch ($extension) {
             case 'jpeg':
             case 'jpg':
-                $image = imagecreatefromjpeg($this->getParameter('images_directory').'/'.$fichier);
+                $image = \imagecreatefromjpeg($this->getParameter('images_directory').'/'.$fichier);
                 break;
             case 'png':
-                $image = imagecreatefrompng($this->getParameter('images_directory').'/'.$fichier);
-                imagepalettetotruecolor($image);
-                imagealphablending($image, true);
-                imagesavealpha($image, true);
+                $image = \imagecreatefrompng($this->getParameter('images_directory').'/'.$fichier);
+                \imagepalettetotruecolor($image);
+                \imagealphablending($image, true);
+                \imagesavealpha($image, true);
                 break;
             default:
                 return new Response('Invalid image type', Response::HTTP_BAD_REQUEST);
         }
-        imagewebp($image, $this->getParameter('images_directory').'/'.$newFichier, 100);
+        \imagewebp($image, $this->getParameter('images_directory').'/'.$newFichier, 100);
 
         $article = new Article();
         $article->setCategory($category);
