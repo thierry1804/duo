@@ -12,11 +12,8 @@ use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Imagine\Gd\Imagine;
-use Imagine\Gd;
 use Imagine\Image\Box;
 use Imagine\Image\ImageInterface;
-use Imagine\Image\Point;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -181,6 +178,7 @@ class ArticleController extends AbstractController
     {
         try {
             $watermark = new Watermark($this->getParameter('images_directory').'/'.$fichier);
+            dd($watermark);
             $watermark
                 ->withImage($this->getParameter('watermark_directory'))
                 ->write()
