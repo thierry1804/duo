@@ -57,15 +57,7 @@ class ArticleController extends AbstractController
                     $fichier
                 );
 
-                $imagine = new Imagine();
-                $image = $imagine->open($this->getParameter('images_directory').'/'.$fichier);
-                $imageSize = $this->getSizeOfAnImage($image);
-                $watermarkPath = $this->getParameter('watermark_directory');
-                $watermark = $imagine->open($watermarkPath);
-                $watermark->resize(new Box($imageSize->getWidth() / 2, $imageSize->getWidth() / 2));
-                $watermarkPosition = new Point(0, $imageSize->getHeight() - ($imageSize->getWidth() / 2));
-                $image->paste($watermark, $watermarkPosition);
-                $image->save($this->getParameter('images_directory').'/'.$fichier);
+                $this->addWatermarkOnImage($fichier);
 
                 $article = new Article();
                 $article->setCategory($category);
@@ -165,16 +157,6 @@ class ArticleController extends AbstractController
             $fichier
         );
 
-        $imagine = new Imagine();
-        $image = $imagine->open($this->getParameter('images_directory').'/'.$fichier);
-        $imageSize = $this->getSizeOfAnImage($image);
-        $watermarkPath = $this->getParameter('watermark_directory');
-        $watermark = $imagine->open($watermarkPath);
-        $watermark->resize(new Box($imageSize->getWidth() / 2, $imageSize->getWidth() / 2));
-        $watermarkPosition = new Point(0, $imageSize->getHeight() - ($imageSize->getWidth() / 2));
-        $image->paste($watermark, $watermarkPosition);
-        $image->save($this->getParameter('images_directory').'/'.$fichier);
-
         $article = new Article();
         $article->setCategory($category);
         $article->setImage($fichier);
@@ -182,7 +164,28 @@ class ArticleController extends AbstractController
 
         $entityManager->flush();
 
-        return new Response('Images uploaded successfully', Response::HTTP_CREATED);
+        return new Response(
+            'Images uploaded successfully. ' . $this->addWatermarkOnImage($fichier),
+            Response::HTTP_CREATED
+        );
+    }
+
+    private function addWatermarkOnImage(string $fichier): string
+    {
+        try {
+            $imagine = new Imagine();
+            $image = $imagine->open($this->getParameter('images_directory').'/'.$fichier);
+            $imageSize = $this->getSizeOfAnImage($image);
+            $watermarkPath = $this->getParameter('watermark_directory');
+            $watermark = $imagine->open($watermarkPath);
+            $watermark->resize(new Box($imageSize->getWidth() / 2, $imageSize->getWidth() / 2));
+            $watermarkPosition = new Point(0, $imageSize->getHeight() - ($imageSize->getWidth() / 2));
+            $image->paste($watermark, $watermarkPosition);
+            $image->save($this->getParameter('images_directory').'/'.$fichier);
+            return 'Watermark added successfully';
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
     }
 
     /**
