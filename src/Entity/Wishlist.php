@@ -49,6 +49,15 @@ class Wishlist
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $transit = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?float $expeditionCost = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $transitCost = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $commission = null;
+
     public function __construct()
     {
         $this->wishlistLines = new ArrayCollection();
@@ -206,6 +215,42 @@ class Wishlist
     public function setTransit(?string $transit): static
     {
         $this->transit = $transit;
+
+        return $this;
+    }
+
+    public function getExpeditionCost(): ?float
+    {
+        return $this->expeditionCost;
+    }
+
+    public function setExpeditionCost(?float $expeditionCost): static
+    {
+        $this->expeditionCost = $expeditionCost;
+
+        return $this;
+    }
+
+    public function getTransitCost(): ?float
+    {
+        return $this->transitCost;
+    }
+
+    public function setTransitCost(?float $transitCost): static
+    {
+        $this->transitCost = $transitCost;
+
+        return $this;
+    }
+
+    public function getCommission(): ?float
+    {
+        return $this->commission;
+    }
+
+    public function setCommission(?float $commission): static
+    {
+        $this->commission = $commission;
 
         return $this;
     }

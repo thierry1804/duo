@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Wishlist;
 use App\Form\QuoteType;
 use App\Repository\UserRepository;
+use App\Repository\WishlistLineRepository;
 use App\Repository\WishlistRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -98,5 +99,32 @@ class QuoteController extends AbstractController
         return $this->render('quote/view.html.twig', [
             'wishlist' => $wishlist,
         ]);
+    }
+
+    #[IsGranted('ROLE_ADMIN')]
+    #[Route('/save', name: 'app_quote_save', methods: ['POST'])]
+    public function saveQuote(Request $request, WishlistRepository $wishlistRepository,
+                              EntityManagerInterface $entityManager, WishlistLineRepository $lineRepository): Response
+    {
+        $datas = $request->request->all();
+        $quoteId = $datas['quote_id'];
+        $wishlist = $wishlistRepository->find($quoteId);
+        $wishlist->setExpeditionCost($datas['expedition']);
+        $wishlist->setTransitCost($datas['transit']);
+        $wishlist->setCommission($datas['commission']);
+        $wishlist->setQuotedAt(new \DateTimeImmutable());
+
+        foreach ($datas['lines'] as $line) {
+            $wishlistLine = $lineRepository->find($line['id']);
+            $wishlistLine->setAmount($line['pu']);
+            $wishlistLine->setUpdatedAt(new \DateTimeImmutable());
+
+            $entityManager->persist($wishlistLine);
+        }
+
+        $entityManager->persist($wishlist);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_quote_view', ['id' => $quoteId]);
     }
 }

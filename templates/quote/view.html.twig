@@ -42,7 +42,7 @@
                             <i class="fa-regular fa-paper-plane"></i> Aérien - Normal
                         {% elseif wishlist.expeditionMode == 'aerien_express' %}
                             <i class="fa-solid fa-paper-plane"></i> Aérien - Express
-                        {% elseif wishlist.expeditionMode == 'maritime_normal' %}
+                        {% elseif wishlist.expeditionMode == 'maritime' %}
                             <i class="fa-solid fa-ship"></i> Maritime
                         {% endif %}
                     </td>
@@ -62,75 +62,90 @@
     </div>
     <div class="col">
         <h2>Les articles demandés</h2>
-        <table class="table table-sm table-striped">
-            <thead>
-                <tr>
-                    <th>Article</th>
-                    <th class="text-center">Quantité</th>
-                    <th>Détails</th>
-                    <th>PU</th>
-                    <th>Montant</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for line in wishlist.wishlistLines %}
-                <tr id="line{{ line.id }}">
-                    <td class="align-middle text-center">
-                        <div class="d-inline-block" style="background-image: url('{{ asset('uploads/' ~ line.article.image) }}');
-                                width: 50px; height: 50px; background-position: center; background-size: cover;">
-                        </div><br>
-                        <code class="text-nowrap small">DUO#{{ line.article.id }}</code>
-                    </td>
-                    <td class="align-middle text-center qty">{{ line.quantity }}</td>
-                    <td class="align-middle">{{ line.details }}</td>
-                    <td class="align-middle"><input type="number" min="1" step="any" class="form-control form-control-sm pu text-end" value="0.00" /></td>
-                    <td class="align-middle"><input type="text" class="form-control-plaintext form-control-sm montant text-end pe-4" value="0.00" /></td>
-                </tr>
-            {% endfor %}
-            </tbody>
-            <tfoot>
-                <tr>
-                    <th colspan="4" class="text-end">Sous-total</th>
-                    <th><input type="text" class="form-control-plaintext form-control-sm sous-total fw-bold text-end pe-4" value="0.00" /></th>
-                </tr>
-                <tr>
-                    <th colspan="4" class="text-end">
-                        Coût de l'expédition ({% if wishlist.expeditionMode == 'aerien_normal' %}
-                            Aérien - Normal
-                        {% elseif wishlist.expeditionMode == 'aerien_express' %}
-                            Aérien - Express
-                        {% elseif wishlist.expeditionMode == 'maritime_normal' %}
-                        Maritime
-                        {% endif %})
-                    </th>
-                    <td><input type="number" min="1" step="any" class="form-control form-control-sm expedition text-end" value="0.00" /></td>
-                </tr>
-                <tr>
-                    <th colspan="4" class="text-end">
-                        Coût du service Transitaire ({% if wishlist.transitType == 'duo_transitaire' %}
-                            Transitaire partenaire DUO
-                        {% else %}
-                            Transitaire choisi par le client: {{ wishlist.transit }}
-                        {% endif %})
-                    </th>
-                    <td><input type="number" min="1" step="any" class="form-control form-control-sm transit text-end" value="0.00" /></td>
-                </tr>
-                <tr>
-                    <th colspan="4" class="text-end">
-                        Commission DUO Import MDG
-                    </th>
-                    <td><input type="number" min="1" step="any" class="form-control form-control-sm commission text-end" value="0.00" /></td>
-                </tr>
-                <tr>
-                    <th colspan="4" class="text-end">TOTAL</th>
-                    <th><input type="number" min="1" step="any" class="form-control-plaintext form-control-sm total text-end fw-bold pe-2" value="0.00" /></th>
-                </tr>
-            </tfoot>
-        </table>
+        <form method="POST">
+            <input type="hidden" name="quote_id" value="{{ wishlist.id }}" />
+            <table class="table table-sm table-striped">
+                <thead>
+                    <tr>
+                        <th>Article</th>
+                        <th class="text-center">Quantité</th>
+                        <th>Détails</th>
+                        <th>PU</th>
+                        <th>Montant</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for line in wishlist.wishlistLines %}
+                    <tr id="line{{ line.id }}">
+                        <td class="align-middle text-center">
+                            <div class="d-inline-block" style="background-image: url('{{ asset('uploads/' ~ line.article.image) }}');
+                                    width: 50px; height: 50px; background-position: center; background-size: cover;">
+                            </div><br>
+                            <code class="text-nowrap small">DUO#{{ line.article.id }}</code>
+                        </td>
+                        <td class="align-middle text-center qty">{{ line.quantity }}</td>
+                        <td class="align-middle">{{ line.details }}</td>
+                        <td class="align-middle">
+                            <input type="hidden" name="lines[{{ line.id }}][id]" value="{{ line.id }}" />
+                            <input type="number" name="lines[{{ line.id }}][pu]" min="1" step="any" class="form-control form-control-sm pu text-end" value="{{ line.amount }}" />
+                        </td>
+                        <td class="align-middle">
+                            <input type="text" class="form-control-plaintext form-control-sm montant text-end pe-4" value="0.00" />
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="4" class="text-end">Sous-total</th>
+                        <th><input type="text" class="form-control-plaintext form-control-sm sous-total fw-bold text-end pe-4" value="{{ wishlist.expeditionCost }}" /></th>
+                    </tr>
+                    <tr>
+                        <th colspan="4" class="text-end">
+                            Coût de l'expédition ({% if wishlist.expeditionMode == 'aerien_normal' %}
+                                Aérien - Normal
+                            {% elseif wishlist.expeditionMode == 'aerien_express' %}
+                                Aérien - Express
+                            {% elseif wishlist.expeditionMode == 'maritime' %}
+                            Maritime
+                            {% endif %})
+                        </th>
+                        <td><input name="expedition" type="number" min="1" step="any" class="form-control form-control-sm expedition text-end" value="{{ wishlist.transitCost }}" /></td>
+                    </tr>
+                    <tr>
+                        <th colspan="4" class="text-end">
+                            Coût du service Transitaire ({% if wishlist.transitType == 'duo_transitaire' %}
+                                Transitaire partenaire DUO
+                            {% else %}
+                                Transitaire choisi par le client: {{ wishlist.transit }}
+                            {% endif %})
+                        </th>
+                        <td><input name="transit" type="number" min="1" step="any" class="form-control form-control-sm transit text-end" value="{{ wishlist.commission }}" /></td>
+                    </tr>
+                    <tr>
+                        <th colspan="4" class="text-end">
+                            Commission DUO Import MDG
+                        </th>
+                        <td><input name="commission" type="number" min="1" step="any" class="form-control form-control-sm commission text-end" value="0.00" /></td>
+                    </tr>
+                    <tr>
+                        <th colspan="4" class="text-end">TOTAL</th>
+                        <th><input type="number" min="1" step="any" class="form-control-plaintext form-control-sm total text-end fw-bold pe-2" value="0.00" /></th>
+                    </tr>
+                </tfoot>
+            </table>
+        </form>
+        <button id="quote" class="btn btn-primary" disabled>Valider ce devis</button>
+        {% if wishlist.quotedAt %}
+        <button id="print_quote" class="btn btn-secondary">Imprimer ce devis</button>
+        {% endif %}
     </div>
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
+    <script>
+        let savePath = '{{ path('app_quote_save') }}';
+    </script>
     <script src="{{ asset('js/quote_script.js') }}"></script>
 {% endblock %}

@@ -10,6 +10,20 @@ $(function () {
         })
     ;
 
+    $('button#quote').click(function(e) {
+        e.preventDefault();
+        let data = $('form').serialize();
+        console.log(data);
+        $.ajax({
+            url: savePath,
+            data: data,
+            method: 'POST',
+            success: function (response) {
+                console.log(response);
+            }
+        });
+    });
+
     let updateMontant = function(cible) {
         let pu = cible.find('.pu').val();
         let qty = cible.find('.qty').text();
@@ -32,6 +46,19 @@ $(function () {
         let expedition = parseFloat($('.expedition').val());
         let transit = parseFloat($('.transit').val());
         let commission = parseFloat($('.commission').val());
+        let button = $('button#quote');
         $('.total').val(sousTotal + expedition + transit + commission);
+        button.prop('disabled', true);
+        if (sousTotal + expedition + transit + commission > 0) {
+            button.prop('disabled', false);
+        }
     }
+
+    $('.pu')
+        .map(function() {
+            updateMontant($(this).closest('tr'));
+            updateSousTotal();
+            updateTotal();
+        })
+    ;
 });
