@@ -137,7 +137,7 @@
         </form>
         <button id="quote" class="btn btn-primary" disabled>Valider ce devis</button>
         {% if wishlist.quotedAt %}
-        <button id="print_quote" class="btn btn-secondary">Imprimer ce devis</button>
+        <a id="print_quote" class="btn btn-secondary" target="_blank" href="{{ path('app_quote_print', {'id': wishlist.id}) }}">Imprimer ce devis</a>
         {% endif %}
     </div>
 {% endblock %}

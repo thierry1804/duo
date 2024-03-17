@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Devis #{{ wishlist.checkedOutAt|date('Ymd') }}-{{ wishlist.id }}</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+    <style>
+        * {
+            font-family: 'Arial', sans-serif;
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row mt-5 pt-4">
+        <h1>Devis #{{ wishlist.checkedOutAt|date('Ymd') }}-{{ wishlist.id }}</h1>
+        <div class="col-4">
+            <h2>Informations sur le client</h2>
+            <table class="table table-sm table-borderless">
+                <tbody>
+                <tr>
+                    <th class="text-center"><i class="fa-solid fa-user"></i></th>
+                    <td>{{ wishlist.customer.nom }} {{ wishlist.customer.prenom }}</td>
+                </tr>
+                <tr>
+                    <th class="text-center"><i class="fa-solid fa-envelope"></i></th>
+                    <td>{{ wishlist.customer.email }}</td>
+                </tr>
+                <tr>
+                    <th class="text-center"><i class="fa-solid fa-mobile"></i></th>
+                    <td>{{ wishlist.customer.telephone }}</td>
+                </tr>
+                <tr>
+                    <th class="text-center"><i class="fa-solid fa-location-dot"></i></th>
+                    <td>{{ wishlist.customer.adresse }}</td>
+                </tr>
+                <tr>
+                    <th class="text-center"><i class="fa-regular fa-calendar-days"></i></th>
+                    <td>Devis du {{ wishlist.checkedOutAt|date('d/m/Y') }} à  {{ wishlist.checkedOutAt|date('H:i:s') }}</td>
+                </tr>
+                <tr>
+                    <th colspan="2">Expédition</th>
+                </tr>
+                <tr>
+                    <th class="text-center"><i class="fa-solid fa-truck-plane"></i></th>
+                    <td>
+                        {% if wishlist.expeditionMode == 'aerien_normal' %}
+                            <i class="fa-regular fa-paper-plane"></i> Aérien - Normal
+                        {% elseif wishlist.expeditionMode == 'aerien_express' %}
+                            <i class="fa-solid fa-paper-plane"></i> Aérien - Express
+                        {% elseif wishlist.expeditionMode == 'maritime' %}
+                            <i class="fa-solid fa-ship"></i> Maritime
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th class="text-center"><i class="fa-solid fa-user-tie"></i></th>
+                    <td>
+                        {% if wishlist.transitType == 'duo_transitaire' %}
+                            <i class="fa-solid fa-clipboard-user"></i> Transitaire partenaire DUO
+                        {% else %}
+                            <i class="fa-regular fa-id-badge"></i> Votre propre transitaire: {{ wishlist.transit }}
+                        {% endif %}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col">
+            <h2>Les articles demandés</h2>
+            <form method="POST">
+                <input type="hidden" name="quote_id" value="{{ wishlist.id }}" />
+                <table class="table table-sm table-striped">
+                    <thead>
+                    <tr>
+                        <th>Article</th>
+                        <th class="text-center">Quantité</th>
+                        <th>Détails</th>
+                        <th>PU</th>
+                        <th>Montant</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for line in wishlist.wishlistLines %}
+                        <tr id="line{{ line.id }}">
+                            <td class="align-middle text-center">
+                                <div class="d-inline-block" style="background-image: url('{{ asset('uploads/' ~ line.article.image) }}');
+                                        width: 50px; height: 50px; background-position: center; background-size: cover;">
+                                </div><br>
+                                <code class="text-nowrap small">DUO#{{ line.article.id }}</code>
+                            </td>
+                            <td class="align-middle text-center qty">{{ line.quantity }}</td>
+                            <td class="align-middle">{{ line.details }}</td>
+                            <td class="align-middle">
+                                <input type="hidden" name="lines[{{ line.id }}][id]" value="{{ line.id }}" />
+                                <input type="number" name="lines[{{ line.id }}][pu]" min="1" step="any" class="form-control form-control-sm pu text-end" value="{{ line.amount }}" />
+                            </td>
+                            <td class="align-middle">
+                                <input type="text" class="form-control-plaintext form-control-sm montant text-end pe-4" value="0.00" />
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <th colspan="4" class="text-end">Sous-total</th>
+                        <th><input type="text" class="form-control-plaintext form-control-sm sous-total fw-bold text-end pe-4" value="{{ wishlist.expeditionCost }}" /></th>
+                    </tr>
+                    <tr>
+                        <th colspan="4" class="text-end">
+                            Coût de l'expédition ({% if wishlist.expeditionMode == 'aerien_normal' %}
+                            Aérien - Normal
+                        {% elseif wishlist.expeditionMode == 'aerien_express' %}
+                            Aérien - Express
+                        {% elseif wishlist.expeditionMode == 'maritime' %}
+                            Maritime
+                            {% endif %})
+                        </th>
+                        <td><input name="expedition" type="number" min="1" step="any" class="form-control form-control-sm expedition text-end" value="{{ wishlist.transitCost }}" /></td>
+                    </tr>
+                    <tr>
+                        <th colspan="4" class="text-end">
+                            Coût du service Transitaire ({% if wishlist.transitType == 'duo_transitaire' %}
+                            Transitaire partenaire DUO
+                        {% else %}
+                            Transitaire choisi par le client: {{ wishlist.transit }}
+                            {% endif %})
+                        </th>
+                        <td><input name="transit" type="number" min="1" step="any" class="form-control form-control-sm transit text-end" value="{{ wishlist.commission }}" /></td>
+                    </tr>
+                    <tr>
+                        <th colspan="4" class="text-end">
+                            Commission DUO Import MDG
+                        </th>
+                        <td><input name="commission" type="number" min="1" step="any" class="form-control form-control-sm commission text-end" value="0.00" /></td>
+                    </tr>
+                    <tr>
+                        <th colspan="4" class="text-end">TOTAL</th>
+                        <th><input type="number" min="1" step="any" class="form-control-plaintext form-control-sm total text-end fw-bold pe-2" value="0.00" /></th>
+                    </tr>
+                    </tfoot>
+                </table>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

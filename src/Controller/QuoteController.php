@@ -8,6 +8,8 @@ use App\Repository\UserRepository;
 use App\Repository\WishlistLineRepository;
 use App\Repository\WishlistRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
@@ -126,5 +128,31 @@ class QuoteController extends AbstractController
         $entityManager->flush();
 
         return $this->redirectToRoute('app_quote_view', ['id' => $quoteId]);
+    }
+
+    #[IsGranted('ROLE_ADMIN')]
+    #[Route('/print/{id}', name: 'app_quote_print', requirements: ['id' => '\d+'])]
+    public function printQuote(Wishlist $wishlist): Response
+    {
+        if ($wishlist === null) {
+            return new Response('404 Not Found', 404, ['Content-Type' => 'text/plain']);
+        }
+
+        $options = new Options();
+        $options->set('isRemoteEnabled', true);
+        $domPdf = new Dompdf($options);
+        $domPdf->loadHtml($this->renderView('quote/print.html.twig', [
+            'wishlist' => $wishlist,
+        ]));
+        $domPdf->setPaper('A4', 'landscape');
+        $domPdf->render();
+
+        $today = new \DateTime();
+
+        return new Response(
+            $domPdf->stream('devis_' . $today->format('YmdHis'), ["Attachment" => false]),
+            Response::HTTP_OK,
+            ['Content-Type' => 'application/pdf']
+        );
     }
 }
