@@ -28,7 +28,7 @@ class CategoryRepository extends ServiceEntityRepository
     public function getCategories(): array
     {
         $sql = "
-            select c.id, c.label, count(a.id) as nb
+            select c.id, c.label, count(a.id) as nb, MIN(a.image) as image
             from article a
             inner join category c on c.id = a.category_id
             group by c.id

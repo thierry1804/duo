@@ -23,6 +23,15 @@ class DuoController extends AbstractController
         ]);
     }
 
+    #[Route('/home', name: 'app_home')]
+    public function home(CategoryRepository $categoryRepository): Response
+    {
+        $categories = $categoryRepository->getCategories();
+        return $this->render('duo/home.html.twig', [
+            'categories' => $categories,
+        ]);
+    }
+
     /**
      * @throws LargeTextException
      * @throws RateLimitException
