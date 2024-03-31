@@ -8,3 +8,7 @@
         display: none;  /* hide whole page */
     }
 }
+nav.navbar {
+    background-size: cover;
+    background-repeat: no-repeat;
+}

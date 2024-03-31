@@ -1,10 +1,64 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
+<nav class="row navbar sticky-top navbar-expand-lg bg-body-tertiary" style="background-image: url('{{ asset('background.png') }}');">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">
             <img src="{{ asset('logo.jpg') }}" alt="Logo" width="60">
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="d-flex justify-content-end navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{{ path('app_duo') }}">Accueil</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="">Qui sommes-nous ?</a>
+                </li>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_admin_users_management') }}">
+                            <i class="fa-solid fa-users-gear"></i>
+                            Les utilisateurs
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_category_index') }}">
+                            <i class="fa-solid fa-layer-group"></i>
+                            Les catégories
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_article_index') }}">
+                            <i class="fa-solid fa-store"></i>
+                            Les articles
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_quotes') }}">
+                            <i class="fa-solid fa-receipt"></i>
+                            Les devis
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+            <form class="d-flex" method="post" action="{{ path('app_search') }}">
+                <div class="input-group">
+                    <input name="q" class="form-control" type="search" placeholder="Rechercher" aria-label="Search" value="{{ app.request.request.get('q', null) }}">
+                    <button class="btn btn-outline-success" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </div>
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-2" id="wishlist">
+                    {{ render(path('app_wishlist_nb_items')) }}
+                </ul>
+                <div class="btn-group ms-2">
+                    <button class="btn btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa-solid fa-circle-user"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="{{ path('app_logout') }}"><i class="fa-solid fa-arrow-right-from-bracket"></i> Déconnecter</a></li>
+                    </ul>
+                </div>
+            </form>
+        </div>
     </div>
 </nav>
