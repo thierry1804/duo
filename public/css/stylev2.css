@@ -1,0 +1,10 @@
+@media only screen and (max-width: 575px) {
+    * {
+        font-size: 1em;
+    }
+}
+@media print {
+    html, body {
+        display: none;  /* hide whole page */
+    }
+}
