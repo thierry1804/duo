@@ -28,7 +28,7 @@
                     <a class="nav-link text-white" href="#">Boutique</a>
                 </li>
             </ul>
-            <form class="d-flex me-3">
+            <form class="d-flex me-0 me-sm-0 me-md-0 me-lg-3 me-xl-3 me-xxl-3">
                 <div class="input-group input-group-sm">
                     <input name="q" class="form-control" type="search" placeholder="Rechercher" aria-label="Search" value="{{ app.request.request.get('q', null) }}">
                     <button class="btn btn-outline-light" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
@@ -47,15 +47,27 @@
                 <li class="nav-item d-none d-lg-block">
                     <a class="nav-link text-white opacity-25 disabled" aria-disabled="true" href="">|</a>
                 </li>
-                <li class="nav-item dropdown">
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <li class="nav-item d-block d-lg-none d-xl-none d-xxl-none"><a class="dropdown-item" href="#">Profil</a></li>
+                <li class="nav-item d-block d-lg-none d-xl-none d-xxl-none"><a class="dropdown-item" href="#">Paramètres</a></li>
+                <li class="nav-item d-block d-lg-none d-xl-none d-xxl-none"><hr class="dropdown-divider"></li>
+                <li class="nav-item d-block d-lg-none d-xl-none d-xxl-none"><a class="dropdown-item" href="#">Déconnexion</a></li>
+                {% else %}
+                <li class="nav-item d-block d-lg-none d-xl-none d-xxl-none"><a class="dropdown-item text-white" href="#">Se connecter</a></li>
+                {% endif %}
+                <li class="nav-item dropdown d-none d-lg-inline-block d-xl-inline-block d-xxl-inline-block">
                     <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fas fa-user"></i>
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                    <ul class="dropdown-menu dropdown-menu-end opacity-75 menu-blue" aria-labelledby="navbarDropdown">
+                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                         <li><a class="dropdown-item" href="#">Profil</a></li>
                         <li><a class="dropdown-item" href="#">Paramètres</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="#">Déconnexion</a></li>
+                        {% else %}
+                        <li><a class="dropdown-item text-white" href="#">Se connecter</a></li>
+                        {% endif %}
                     </ul>
                 </li>
             </ul>

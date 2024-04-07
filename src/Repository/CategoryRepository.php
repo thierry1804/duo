@@ -25,15 +25,19 @@ class CategoryRepository extends ServiceEntityRepository
     /**
      * @throws Exception
      */
-    public function getCategories(): array
+    public function getCategories(int $limit = 0): array
     {
+        $orderAndLimit = "order by c.label asc";
+        if ($limit > 0) {
+            $orderAndLimit = "order by count(a.id) desc limit $limit";
+        }
         $sql = "
             select c.id, c.label, count(a.id) as nb, MIN(a.image) as image
             from article a
             inner join category c on c.id = a.category_id
             group by c.id
             having count(a.id) > 0
-            order by c.label asc
+            $orderAndLimit
         ";
 
         $entityManager = $this->getEntityManager();

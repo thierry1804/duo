@@ -1,1 +1,13 @@
 {% extends 'layout.html.twig' %}
+
+{% block body %}
+    <div class="col p-4">
+        {% for category in categories %}
+            <h4>
+                {{ category.label }}
+                <span class="badge bg-primary rounded-pill small ms-2">{{ category.nb }}</span>
+            </h4>
+            {{ render(path('app_article_sample', {id: category.id, nb: 3})) }}
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -24,6 +24,9 @@ class DuoController extends AbstractController
         ]);
     }
 
+    /**
+     * @throws Exception
+     */
     #[Route('/home', name: 'app_home')]
     public function home(CategoryRepository $categoryRepository): Response
     {
@@ -39,9 +42,11 @@ class DuoController extends AbstractController
     #[Route('/v2', name: 'app_v2')]
     public function newHom(CategoryRepository $categoryRepository): Response
     {
-        $categories = $categoryRepository->getCategories();
+        $categories = $categoryRepository->getCategories(0);
+        $categoriesFooter = $categoryRepository->getCategories(5);
         return $this->render('duo/v2.html.twig', [
             'categories' => $categories,
+            'categoriesFooter' => $categoriesFooter,
         ]);
     }
 
