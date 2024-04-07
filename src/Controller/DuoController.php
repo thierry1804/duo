@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\ArticleRepository;
 use App\Repository\CategoryRepository;
 use Doctrine\DBAL\Exception;
 use Stichoza\GoogleTranslate\Exceptions\LargeTextException;
@@ -40,13 +41,15 @@ class DuoController extends AbstractController
      * @throws Exception
      */
     #[Route('/v2', name: 'app_v2')]
-    public function newHom(CategoryRepository $categoryRepository): Response
+    public function newHom(CategoryRepository $categoryRepository, ArticleRepository $articleRepository): Response
     {
         $categories = $categoryRepository->getCategories(0);
         $categoriesFooter = $categoryRepository->getCategories(5);
+        $latestProducts = $articleRepository->getLatest();
         return $this->render('duo/v2.html.twig', [
             'categories' => $categories,
             'categoriesFooter' => $categoriesFooter,
+            'latestProducts' => $latestProducts,
         ]);
     }
 

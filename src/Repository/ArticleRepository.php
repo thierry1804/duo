@@ -95,13 +95,42 @@ class ArticleRepository extends ServiceEntityRepository
         $sql = "
             select a.*
             from article a
+            inner join category c on c.id = a.category_id
             where a.id like '%$q%'
             or a.label like '%$q%'
             or a.couleur like '%$q%'
             or a.taille like '%$q%'
             or a.pointure like '%$q%'
             or a.keywords like '%$q%'
+            or c.label like '%$q%'
             order by a.created_at desc
+        ";
+
+        $entityManager = $this->getEntityManager();
+
+        $cnx = $entityManager->getConnection();
+
+        $results = $cnx->executeQuery($sql);
+
+        return $results->fetchAllAssociative();
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getLatest(): array
+    {
+        $sql = "
+            SELECT a.*
+            FROM article a
+            JOIN (
+                SELECT a2.id, a2.category_id, @rn := IF(@cat = a2.category_id, @rn + 1, 1) AS rn, @cat := a2.category_id
+                FROM article a2
+                CROSS JOIN (SELECT @rn := 0, @cat := 0) r
+                ORDER BY a2.category_id, a2.id DESC
+            ) d ON a.id = d.id
+            WHERE d.rn <= 2
+            ORDER BY RAND();
         ";
 
         $entityManager = $this->getEntityManager();
