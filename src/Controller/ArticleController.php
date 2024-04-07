@@ -134,10 +134,11 @@ class ArticleController extends AbstractController
         return $this->redirectToRoute('app_article_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/sample/{id}', name: 'app_article_sample', methods: ['GET'])]
-    public function getSampleArticlesByCategory(Category $category, ArticleRepository $articleRepository): Response
+    #[Route('/sample/{id}/{nb}', name: 'app_article_sample', defaults: ['nb' => 5], methods: ['GET'])]
+    public function getSampleArticlesByCategory(Category $category, ArticleRepository $articleRepository,
+                                                int $nb = 5): Response
     {
-        $articles = $articleRepository->getArticlesByCategory($category);
+        $articles = $articleRepository->getArticlesByCategory($category, $nb);
         return $this->render('article/_sample.html.twig', [
             'articles' => $articles,
         ]);

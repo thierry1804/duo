@@ -95,7 +95,8 @@ class CategoryController extends AbstractController
      */
     #[IsGranted('ROLE_USER')]
     #[Route('/{id}/articles', name: 'app_category_articles', methods: ['GET'])]
-    public function getArticlesByCategory(Category $category, ArticleRepository $articleRepository, CategoryRepository $categoryRepository): Response
+    public function getArticlesByCategory(Category $category, ArticleRepository $articleRepository,
+                                          CategoryRepository $categoryRepository): Response
     {
         $categories = $categoryRepository->getCategories();
         $articles = $articleRepository->getArticlesByCategory($category, 0);

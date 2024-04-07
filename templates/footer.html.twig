@@ -1,0 +1,59 @@
+<footer class="d-flex flex-column flex-column-reverse flex-lg-row pt-3 mt-auto fs-6 text justify-content-center">
+    <div class="flex-fill p-3 order-1 text-center align-self-stretch d-flex align-items-end flex-column">
+        <div class="col-12 mb-1">
+            <a class="" href="#">
+                <img src="{{ asset('logo.jpg') }}" alt="Logo" width="100">
+            </a>
+        </div>
+        <div class="col-12">
+            <a href="https://www.facebook.com/duoimportmdg" target="_blank" class="fs-1 text-white"><i class="fa-brands fa-facebook-f"></i></a>
+        </div>
+        <div class="col-12 mt-auto">
+            <span class="small fw-lighter">&copy; 2024 DUO Import MDG Tout droit réservé</span>
+        </div>
+    </div>
+    <div class="p-3 order-2 order-lg-3 align-self-stretch">
+        <p class="fs-5"><strong>Nous contacter</strong></p>
+        <p class="small fw-lighter">Nous vous aidons à sélectionner, acheter et importer les articles qui vous intéressent depuis la Chine.</p>
+        <p class="small fw-lighter">Pour ce faire, n'hésitez pas à nous contacter :</p>
+        <table class="small">
+            <tbody>
+                <tr>
+                    <td class="text-center pe-2"><i class="fa-solid fa-mobile"></i></td>
+                    <td><a href="tel:+261384271168" class="text-decoration-none text-white small">+261 38 42 711 68</a></td>
+                </tr>
+                <tr>
+                    <td class="text-center pe-2"><i class="fa-solid fa-at"></i></td>
+                    <td><a href="mailto:duoimportmdg@protonmail.com" class="text-decoration-none text-white small">duoimportmdg@protonmail.com</a></td>
+                </tr>
+                <tr>
+                    <td class="text-center pe-2"><i class="fa-solid fa-location-dot"></i></td>
+                    <td>
+                        <a href="https://maps.app.goo.gl/sifQPRGb4ZWTKG2XA" target="_blank" class="text-decoration-none text-white small">
+                            Ankadindravola Ivato, Antananarivo Madagascar
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="flex-fill p-3 order-3 order-lg-2 align-self-stretch">
+        <p class="fs-5"><strong>Boutique</strong></p>
+        <p class="small fw-lighter">Découvrez nos produits en vente sur notre boutique en ligne.</p>
+        <ul class="list-group list-group-flush small">
+            {% for category in categoriesFooter %}
+                <li class="list-group-item d-flex justify-content-between align-items-center small bg-opacity-10 bg-secondary">
+                    <a href="{{ path('app_category_articles', { id: category.id }) }}" class="text-decoration-none stretched-link text-white">
+                        {{ category.label }}
+                    </a>
+                    <span class="badge bg-secondary rounded-pill small">{{ category.nb }}</span>
+                </li>
+            {% endfor %}
+            <li class="list-group-item d-flex justify-content-between align-items-center small bg-opacity-10 bg-secondary">
+                <a href="{{ path('app_category_articles', { id: 0 }) }}" class="text-decoration-none stretched-link text-white">
+                    <i class="fa-solid fa-arrow-right-long small"></i> Voir toutes les catégories
+                </a>
+            </li>
+        </ul>
+    </div>
+</footer>

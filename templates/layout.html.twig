@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{% block title %}DUO Import MDG!{% endblock %}</title>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+        <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+        {% block stylesheets %}
+            <link href="{{ asset('css/stylev2.css') }}" rel="stylesheet">
+        {% endblock %}
+        <script src="{{ asset('js/fontawesome.js') }}" crossorigin="anonymous"></script>
+    </head>
+    <body class="d-flex flex-column min-vh-100">
+        <div id="fb-root"></div>
+        <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v19.0" nonce="4368l3j3"></script>
+        <div class="container-fluid">
+            {% include('header.html.twig') %}
+            {% block body %}{% endblock %}
+            {% for message in app.flashes('success') %}
+                <div class="row mt-5 pt-4">
+                    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11;">
+                        <div id="liveToast" class="toast show bg-success text-white" role="alert" aria-live="assertive" aria-atomic="true"  data-bs-autohide="false">
+                            <div class="toast-header">
+                                <strong class="me-auto">DUO Import MDG</strong>
+                                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                            </div>
+                            <div class="toast-body">
+                                {{ message }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        {% include('footer.html.twig') %}
+
+        <script src="{{ asset('js/jquery.js') }}" crossorigin="anonymous"></script>
+        <script src="{{ asset('js/popper.js') }}" crossorigin="anonymous"></script>
+        <script src="{{ asset('js/bootstrap.js') }}" crossorigin="anonymous"></script>
+        {% block javascripts %}
+        {% endblock %}
+    </body>
+</html>
