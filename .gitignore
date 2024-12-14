@@ -5,6 +5,9 @@
 /.env.*.local
 /config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
+/.env
+/.idea/
+/var/
 ###< symfony/framework-bundle ###
 
 ###> phpunit/phpunit ###
